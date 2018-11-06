@@ -43,7 +43,6 @@ scss/*
 uploads/*
 client/app/mdb-type/*
 client/assets/*
+server/aws-lambda/*
 uploads/*
 wordpress/*
-client/environments/environment.ts
-client/environments/environment.prod.ts
