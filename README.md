@@ -55,4 +55,3 @@ Run `ng lint` (frontend) and `npm run lintbe` (backend) to execute the linter vi
 ### Author
 
 * [SAMBUICHI Nobuyuki](https://github.com/pontsoleil)
-# WuWei
