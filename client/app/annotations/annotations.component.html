@@ -1,0 +1,117 @@
+<app-loading [condition]="isLoading"></app-loading>
+
+<app-toast [message]="toast.message"></app-toast>
+
+<div class="card" *ngIf="isAdding">
+  <h4 class="card-header">Add new Annotation</h4>
+  <div class="card-block">
+    <form class="form-inline" [formGroup]="addAnnotationForm" (ngSubmit)="addAnnotation()" style="text-align:center">
+
+      <div class="form-group">
+        <label for="body">Body</label>
+        <select class="form-control selectpicker" [(ngModel)]="body" formControlName="body">
+          <option *ngFor="let x of bodys" [ngValue]="x">
+            <span *ngIf="'TextualBody'==x.type">{{x.value}}</span>
+            <span *ngIf="'TextualBody'!=x.type">{{x.type}}({{x.format}}):{{x.id}}</span>
+          </option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="target">Target</label>
+        <select class="form-control selectpicker" [(ngModel)]="target" formControlName="target">
+          <option *ngFor="let x of targets" [ngValue]="x">
+            <span *ngIf="'TextualBody'==x.type">{{x.value}}</span>
+            <span *ngIf="'TextualBody'!=x.type">{{x.type}}:{{x.name}}({{x.id}})</span>
+          </option>
+        </select>
+      </div>
+  
+      <div class="form-group">
+        <select class="form-control selectpicker" name="motivation" formControlName="motivation" [(ngModel)]="motivation">
+          <option value="" disabled>Select Motivation</option>
+          <option *ngFor="let x of motivations" [ngValue]="x">{{x.name}}</option>
+        </select>
+      </div>
+
+      <button class="btn btn-sm btn-primary" type="submit" [disabled]="!addAnnotationForm.valid">
+        <i class="fa fa-floppy-o"></i> Add
+      </button>
+      <button class="btn btn-sm btn-warning" (click)="cancelEditing()">
+        <i class="fa fa-times"> </i> Cancel
+      </button>
+  
+    </form>
+  </div>
+</div>
+
+<div class="card" *ngIf="!isLoading">
+  <h4 class="card-header">Current annotations ({{annotations.length}})
+    <button class="btn btn-sm btn-primary" *ngIf="!isAdding" (click)="enableAdding()">
+      <i class="fa fa-plus"> </i> Add</button>
+  </h4>
+  <div class="card-block">
+    <table class="table table-bordered table-striped">
+      <thead class="thead-default" *ngIf="!isEditing">
+        <tr>
+          <th>body</th>
+          <th>target</th>
+          <th>motivation</th>
+          <th>by</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody *ngIf="annotations.length === 0">
+        <tr>
+          <td colspan="5">There are no annotations in the DB. Add a new annotation above.</td>
+        </tr>
+      </tbody>
+      <tbody *ngIf="!isEditing">
+        <tr *ngFor="let annotation of annotations">
+          <td style="text-align:left">{{(annotation && annotation.body_ref && annotation.body_ref.value) ? annotation.body_ref.value : ""}}</td>
+          <td style="text-align:left">{{(annotation && annotation.target_ref && annotation.target_ref.id) ? annotation.target_ref.id : ""}}</td>
+          <td>{{annotation.motivation}}</td>
+          <td style="text-align:left">{{annotation.creator_ref.name}}</td>
+          <td>
+            <button class="btn btn-sm btn-warning" (click)="enableEditing(annotation)"
+                uib-popover="Edit" popover-trigger="'mouseenter'" type="button">
+              <i class="fa fa-pencil"></i>
+            </button>
+            <button class="btn btn-sm btn-danger" (click)="deleteAnnotation(annotation)"><i class="fa fa-trash"></i></button>
+          </td>
+        </tr>
+      </tbody>
+      <tbody *ngIf="isEditing">
+        <tr>
+          <td colspan="5">
+            <form #form="ngForm" (ngSubmit)="editAnnotation(annotation)" style="text-align:left">
+              <div class="form-group">
+                <label for="id">id</label>
+                <input class="form-control" type="text" name="id" [(ngModel)]="annotation.id" required disabled>
+              </div>
+              <div class="form-group">
+                <label for="bodyResource">body</label>
+                <input class="form-control" type="text" name="body" [(ngModel)]="annotation.body_ref.value" required>
+              </div>
+              <div class="form-group">
+                <label for="targetResource">target</label>
+                <input class="form-control" type="text" name="target" [(ngModel)]="annotation.target_ref.id" required disabled>
+              </div>
+              <div class="form-group">
+                <label for="motivation">motivation</label>
+                <select class="form-control selectpicker" name="motivation" [(ngModel)]="annotation.motivation" ng-model="option">
+                  <option *ngFor="let x of motivations" [ngValue]="x">{{x.name}}</option>
+                </select>
+              </div>
+              <button class="btn btn-sm btn-primary" type="submit" [disabled]="!form.form.valid">
+                <i class="fa fa-floppy-o"> Save</i></button>
+              <button class="btn btn-sm btn-warning" (click)="cancelEditing()">
+                <i class="fa fa-times"> Cancel</i></button>
+            </form>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+

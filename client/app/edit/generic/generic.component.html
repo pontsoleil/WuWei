@@ -1,0 +1,286 @@
+<div id="LFtextarea">
+</div>
+
+<div mdbModal #saveModal="mdb-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myBasicModalLabel" aria-hidden="true" [config]="{backdrop: false, ignoreBackdropClick: true}">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close pull-right" aria-label="Close" (click)="saveModal.hide()">
+          <span aria-hidden="true">×</span>
+        </button>
+        <h4 class="modal-title w-100" id="myModalLabel">{{ 'Edit(s) has been made.' | translate:lang }}</h4>
+      </div>
+      <div class="modal-body">
+        {{ 'Do you want to save edit(s)?' | translate:lang }}
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary waves-light" aria-label="Cancel" (click)="cancelEdit()" mdbWavesEffect>{{ 'Close' | translate:lang }}</button>
+        <button type="button" class="btn btn-primary relative waves-light" (click)="saveEdit()" mdbWavesEffect>{{ 'Save' | translate:lang }}</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!--Card-->
+<div class="card">
+  <!--Card image-->
+  <div class="view view-cascade gradient-card-header cloudy-knoxville-gradient text-center">
+    <span class="font-weight-bold grey-text heading">{{ 'Edit' | translate:lang }}</span>
+  </div>
+  <!--/.Card image-->
+  <!--Card content-->
+  <div class="card-body">
+
+    <form #form="ngForm" style="text-align:left">
+      <div class="form-row" *ngIf="'MEMO' !== node.shape">
+        <textarea
+            name="name" [ngModel]="resource.name"
+            (change)="onResourceChange($event, 'name')"
+            placeholder="{{ 'Label' | translate:lang }}"
+            matInput matTextareaAutosize matAutosizeMinRows="1" matAutosizeMaxRows="3">
+        </textarea>
+      </div>
+      <div class="form-row">
+        <ckeditor *ngIf="resource && resource.type === 'TextualBody'"
+            name="resourceValue" #resourceValue
+            [ngModel]="value"
+            (change)="onEditorChange($event, 'value')"
+            [config]="ckeditorShortConfig">
+        </ckeditor>
+        <ckeditor *ngIf="resource && resource.type !== 'TextualBody'"
+            name="resourceValue" #resourceValue
+            [ngModel]="value"
+            (change)="onEditorChange($event, 'value')"
+            [config]="ckeditorConfig">
+        </ckeditor>
+      </div>
+      <div class="form-row input-group form-check form-check-inline">
+        <input type="checkbox" mdbInputDirective class="form-check-input filled-in"
+            id="isCitation"
+            [attr.checked]="isCitation"
+            (change)="onEditorChange($event, 'isCitation')">
+        <label class="form-check-label" for="isCitation">
+          {{ 'Citation' | translate:lang }}
+        </label>
+      </div>
+      <div *ngIf="isCitation" class="form-row">
+        <input type="text" mdbInputDirective class="form-control"
+            name="citation" [ngModel]="citation"
+            (change)="onResourceChange('input', 'citation')">
+      </div>
+      <div class="form-row copyrights d-inline-flex">
+        <div class="form-check form-check-inline d-inline-flex">
+          <input type="checkbox" mdbInputDirective class="form-check-input filled-in"
+              id="isCreativeCommons"
+              [attr.checked]="isCreativeCommons"
+              (change)="onEditorChange($event, 'isCreativeCommons')">
+          <label class="form-check-label" for="isCreativeCommons">
+            {{ creativeCommons.name }}
+          </label>
+        </div>
+        <div class="flex-fill">
+          <a href="#" (click)="openWindow(creativeCommons.url, 400, 600)">
+            <i class="fa fa-info fa-lg"></i>
+          </a>
+        </div>
+      </div>
+      <div class="form-row input-group" *ngIf="!isCreativeCommons">
+        <label for="rights" class="control-label col-3">
+          {{ 'Copyright' | translate:lang }}
+        </label>
+        <input type="text" mdbInputDirective class="form-control col-9"
+            name="rights"
+            [ngModel]="resource.rights"
+            (change)="onResourceChange('input', 'rights')">
+      </div>
+      <div class="form-row input-group" *ngIf="isCreativeCommons">
+        <mat-select *ngIf="isCreativeCommons"
+            name="rights"
+            [value]="rights"
+            (change)="onSelectChange($event, 'rights')"
+            placeholder="{{ 'Select' | translate:lang }}"
+            style="text-align:center">
+          <mat-option
+              *ngFor="let rights of copyrights"
+              [value]="rights.value" style="text-align:center">
+            {{ rights.label }}
+          </mat-option>
+        </mat-select>
+      </div>
+      <div class="form-row input-group" *ngIf="resource && resource.type !== 'TextualBody'">
+        <label for="creator" class="control-label col-3">
+          {{ 'Creator' | translate:lang }}
+        </label>
+        <input type="text" mdbInputDirective class="form-control col-9"
+            name="creator"
+            [ngModel]="resource.creator"
+            (change)="onResourceChange('input', 'creator')">
+      </div>
+      <div class="form-row input-group" *ngIf="resource && resource.type !== 'TextualBody' && 'MEMO' !== node.shape">
+        <label for="id" class="control-label col-3">id(url)</label>
+        <input type="text" mdbInputDirective class="form-control col-9"
+            name="id" [ngModel]="id"
+            (change)="onResourceChange('input', 'id')">
+      </div>
+      <div class="form-row input-group" *ngIf="'THUMBNAIL'===node.shape || node.thumbnail">
+        <label for="thumbnail" class="control-label col-3">
+          {{ 'THUMBNAIL' | translate:lang }}
+        </label>  
+        <input type="text" mdbInputDirective class="form-control col-9"
+            name="thumbnail" [ngModel]="thumbnail"
+            (change)="onNodeChange($event, 'thumbnail')">
+      </div>
+      <div class="form-row input-group" *ngIf="resource && resource.type === 'TextualBody'">
+        <label for="purpose" class="control-label col-3">
+          {{ 'Purpose' | translate:lang }}
+        </label>
+        <mat-select class="col-9"
+            name="purpose" [value]="purpose"
+            (change)="onSelectChange($event, 'purpose')"
+            placeholder="Select resource purpose"
+            style="text-align:center">
+          <mat-option
+              *ngFor="let purpose of purposes"
+              [value]="purpose.value" style="text-align:center">
+            {{ purpose.label }}
+          </mat-option>
+        </mat-select>
+      </div>
+      <div class="form-row input-group" *ngIf="'MEMO' !== node.shape">
+        <label for="shape" class="control-label col-3">
+          {{ 'Shape' | translate:lang }}
+        </label>
+        <mat-select class="col-9"
+            name="shape" [value]="node_shape"
+            (change)="onSelectChange($event, 'shape')"
+            placeholder="Select node shape"
+            style="text-align:center">
+          <mat-option
+              *ngFor="let shape of shapes"
+              [value]="shape.value" style="text-align:center">
+            {{ shape.label | translate:lang }}
+          </mat-option>
+        </mat-select>
+      </div>
+      <div class="form-row input-group" *ngIf="'CIRCLE' !== node.shape">
+        <label for="width" class="control-label col-3">
+          {{ 'Width' | translate:lang }}
+        </label>  
+        <input type="number" mdbInputDirective class="form-control col-9" 
+            name="width" [ngModel]="width"
+            (change)="onNodeChange($event, 'width')"
+            style="text-align:right;">
+      </div>
+      <div class="form-row input-group" *ngIf="'CIRCLE' !== node.shape">
+        <label for="height" class="control-label col-3">
+          {{ 'Height' | translate:lang }}
+        </label>  
+        <input type="number" mdbInputDirective class="form-control col-9" 
+            name="height"
+            [ngModel]="height"
+            (change)="onNodeChange($event, 'height')"
+            style="text-align:right;">
+      </div>
+      <div class="form-row input-group" *ngIf="'CIRCLE' === node.shape">
+        <label for="radius"class="control-label col-3">
+          {{ 'Radius' | translate:lang }}
+        </label>  
+        <input type="number" mdbInputDirective class="form-control col-9"
+            name="radius"
+            [ngModel]="radius"
+            (change)="onNodeChange($event, 'radius')"
+            style="text-align:right;"/>
+      </div>
+      <div class="form-row input-group">
+        <div class="col-3" *ngIf="'THUMBNAIL'!==node.shape">
+            <input type="color" mdbInputDirective class="form-control pointer"
+                name="color" [ngModel]="color"
+                (change)="onNodeChange($event, 'color')"/>
+        </div>
+        <div class="col-2">
+          <label for="font_color">{{ 'Text' | translate:lang }}</label>  
+        </div>
+        <div class="col-3">
+          <input type="color" mdbInputDirective class="form-control pointer"
+              name="font_color" 
+              [ngModel]="font_color"
+              (change)="onNodeChange($event, 'font_color')"/>
+        </div>
+        <div class="col-4">
+          <!-- <div class="md-form input-group"> -->
+            <mat-select
+                name="font_size"
+                [value]="font_size"
+                (change)="onSelectChange($event, 'font_size')"
+                placeholder="Select font size" style="text-align:center">
+              <mat-option
+                  *ngFor="let fontSize of fontSizes"
+                  [value]="fontSize.value" style="text-align:center">
+                {{ fontSize.label }}
+              </mat-option>
+            </mat-select>
+          <!-- </div> -->
+        </div>
+      </div>
+      <div class="form-row input-group" *ngIf="resource && resource.type !== 'TextualBody' && 'MEMO' !== node.shape">
+        <label for="type" class="control-label col-4">
+          {{ 'Type' | translate:lang }}
+        </label>
+        <mat-select class="col-8"
+            name="type"
+            [value]="type"
+            (change)="onSelectChange($event, 'type')"
+            placeholder="Select resource type" style="text-align:center">
+          <mat-option
+              *ngFor="let type of types"
+              [value]="type.value" style="text-align:center">
+            {{ type.label }}
+          </mat-option>
+        </mat-select>
+      </div>
+      <div class="form-row input-group" *ngIf="resource && resource.type !== 'TextualBody' && 'MEMO' !== node.shape">
+        <label for="format" class="control-label col-4">
+          {{ 'Format' | translate:lang }}
+        </label>
+        <input type="text" mdbInputDirective class="form-control col-8"
+            name="format"
+            [ngModel]="resource.format"
+            (change)="onResourceChange('input', 'format')">
+      </div>
+      <div class="form-row input-group" *ngIf="resource && resource.type === 'Text'">
+        <label for="language" class="control-label col-4">
+          {{ 'Language' |translate:lang }}
+        </label>
+        <input type="text" mdbInputDirective class="form-control col-8"
+            name="language" [ngModel]="resource.language"
+            (change)="onResourceChange('input', 'language')">
+      </div>
+      <div class="form-row input-group" *ngIf="'MEMO' !== node.shape">
+        <label for="group" class="control-label col-4">
+          {{ 'Group' | translate:lang }}
+        </label>  
+        <input type="text" mdbInputDirective class="form-control col-8"
+            name="group" [ngModel]="group"
+            (change)="onNodeChange($event, 'group')">
+      </div>
+      <!-- *ngIf="changed" -->
+      <button
+          (click)="saveEdit()"
+          class="btn btn-rounded waves-light"
+          [ngClass]="{'blue-gradient':changed, 'gray-gradient':!changed}"
+          [disabled]="!changed"
+          mdbRippleRadius mdbWavesEffect>
+        <i class="fa fa-floppy-o prefix"></i>
+        {{ 'Save' | translate:lang }}
+      </button>
+    </form>
+
+  </div>
+  <!--/.Card content-->
+</div>
+<!--/.Card-->
+
+<!-- DISMISS BUTTON -->
+<a id="editDismiss" (click)="editDismiss()">
+  <i class="fa fa-times fa-lg fa-fw"></i>
+</a>

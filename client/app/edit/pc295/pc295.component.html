@@ -1,0 +1,111 @@
+<div id="LFtextarea">
+</div>
+
+<div mdbModal #saveModal="mdb-modal" class="modal fade" tabindex="-1" role="dialog"
+     aria-labelledby="myBasicModalLabel" aria-hidden="true"
+     [config]="{backdrop: false, ignoreBackdropClick: true}">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close pull-right" aria-label="Close" (click)="saveModal.hide()">
+          <span aria-hidden="true">×</span>
+        </button>
+        <h4 class="modal-title w-100" id="myModalLabel">{{ 'Edit(s) has been made.' | translate:lang }}</h4>
+      </div>
+      <div class="modal-body">
+        {{ 'Do you want to save edit(s)?' | translate:lang }}
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary waves-light" aria-label="Cancel" (click)="cancelEdit()" mdbWavesEffect>{{ 'Close' | translate:lang }}</button>
+        <button type="button" class="btn btn-primary relative waves-light" (click)="saveEdit()" mdbWavesEffect>{{ 'Save' | translate:lang }}</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!--Card-->
+<div class="card">
+  <!--Card image-->
+  <div class="view view-cascade gradient-card-header cloudy-knoxville-gradient text-center">
+    <span class="font-weight-bold grey-text heading">{{ 'Edit' | translate:lang }}</span>
+    <h5 class="font-weight-bold grey-text">{{ resource.name }}</h5>
+  </div>
+  <!--/.Card image-->
+  <!--Card content-->
+  <div class="card-body">
+
+    <div class="value" *ngIf="pc295Item">
+      <div *ngIf="pc295Item.line_number">
+          <b class="grey-text">Line Number:</b>&nbsp;{{ pc295Item.line_number.trim() }}
+      </div>
+      <div *ngIf="pc295Item.clause_subclause">
+          <b class="grey-text">Clause/Subclause:</b>&nbsp;{{ pc295Item.clause_subclause.trim() }}
+      </div>
+      <div *ngIf="pc295Item.paragraph_figure_table">
+          <b class="grey-text">Paragraph/Figure/Table:</b>&nbsp;{{ pc295Item.paragraph_figure_table.trim() }}
+      </div>
+      <div *ngIf="pc295Item.type_of_comment">
+          <b class="grey-text">Type of comment:</b>&nbsp;{{ pc295Item.type_of_comment }}
+      </div>
+      <div *ngIf="pc295Item.comment">
+          <b class="grey-text">Comment:</b>
+          <hr>
+          <p>{{ pc295Item.comment }}</p>
+      </div>
+      <div *ngIf="pc295Item.proposed_change">
+          <b class="grey-text">Proposed change:</b>
+          <hr>
+          <p>{{ pc295Item.proposed_change }}</p>
+      </div>
+      <div *ngIf="pc295Item.mapping_to_slide_actions">
+          <b class="grey-text">Actions:</b>
+          <hr><p>{{ pc295Item.mapping_to_slide_actions }}</p>
+      </div>
+      <div *ngIf="pc295Item.note">
+          <b class="grey-text">Note:</b>
+          <hr>
+          <p>{{ pc295Item.note }}</p>
+      </div>
+      <div *ngIf="pc295Item.treatment">
+        <b class="grey-text">Modified status/Treatment:</b>
+        <hr>
+        <p>{{ pc295Item.treatment }}</p>
+      </div>
+    </div>
+    
+    <form #form="ngForm" style="text-align:left">    
+      <div class="form-row">
+        <div class="col-12">
+          <ckeditor *ngIf="resource && resource.type === 'TextualBody'"
+                  name="resourceValue" #resourceValue
+                  [ngModel]="value"
+                  (change)="onEditorChange($event, 'memo')"
+                  [config]="ckeditorShortConfig">
+          </ckeditor>
+          <ckeditor *ngIf="resource && resource.type !== 'TextualBody'"
+                  name="resourceValue" #resourceValue
+                  [ngModel]="value"
+                  (change)="onEditorChange($event, 'memo')"
+                  [config]="ckeditorConfig">
+          </ckeditor>
+        </div>
+      </div>
+      <button
+          (click)="saveEdit()"
+          class="btn btn-sm btn-rounded waves-light"
+          [ngClass]="{'blue-gradient':changed, 'gray-gradient':!changed}"
+          [disabled]="!changed"
+          mdbRippleRadius>
+        <i class="fa fa-floppy-o">{{ 'Save' | translate:lang }}</i>
+      </button>
+    </form>
+
+  </div>
+  <!--Card content-->
+</div>
+<!--Card-->
+
+<!-- DISMISS BUTTON -->
+<a id="editDismiss" (click)="editDismiss()">
+  <i class="fa fa-times fa-lg fa-fw"></i>
+</a>

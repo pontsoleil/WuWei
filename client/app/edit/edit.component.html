@@ -1,0 +1,16 @@
+<edit-generic *ngIf="!editMode"
+  [node]="node"
+  [resource]="resource"
+  (genericEvent)="genericEvent($event)">
+</edit-generic>
+
+<edit-pc295 *ngIf="'ISO_PC295'===editMode"
+  [node]="node"
+  [resource]="resource"
+  (pc295Event)="pc295Event($event)">
+</edit-pc295>
+
+<!-- INFO BUTTON -->
+<a id="infoOpen" (click)="infoOpen()">
+  <i class="fa fa-info fa-lg fa-fw"></i>
+</a>

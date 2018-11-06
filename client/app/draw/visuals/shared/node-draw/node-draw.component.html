@@ -1,0 +1,118 @@
+<svg:rect *ngIf="node.visible && !node.filterout && 'RECTANGLE'===node.shape"
+        class="shape-node"
+        [attr.x]="-node.size.width/2"
+        [attr.y]="-node.size.height/2"
+        [attr.width]="node.size.width"
+        [attr.height]="node.size.height"
+        [attr.fill]="node.color">
+</svg:rect>
+<svg:rect *ngIf="node.visible && !node.filterout && 'ROUNDED'===node.shape"
+        class="shape-node"
+        [attr.x]="-node.size.width/2"
+        [attr.y]="-node.size.height/2"
+        [attr.width]="node.size.width"
+        [attr.height]="node.size.height"
+        [attr.rx]="node.size.rx"
+        [attr.ry]="node.size.ry"
+        [attr.fill]="node.color">
+</svg:rect>
+<svg:rect *ngIf="node.visible && !node.filterout && 'ELLIPSE'===node.shape"
+        class="shape-node"
+        [attr.x]="-node.size.width/2"
+        [attr.y]="-node.size.height/2"
+        [attr.width]="node.size.width"
+        [attr.height]="node.size.height"
+        [attr.rx]="node.size.rx"
+        [attr.ry]="node.size.ry"
+        [attr.fill]="node.color">
+</svg:rect>
+<svg:circle *ngIf="node.visible && !node.filterout && 'CIRCLE'===node.shape"
+        class="shape-node"
+        [attr.cx]="0"
+        [attr.cy]="0"
+        [attr.r]="node.size.radius"
+        [attr.fill]="node.color">
+</svg:circle>
+<svg:path *ngIf="node.visible && !node.filterout && 'MEMO'===node.shape"
+        class="memo-node"
+        fill="url(#vertical-gradation)"
+        [attr.d]="'M' + -node.size.width/2 + ',' + -node.size.height/2 + ' l0,' + 4*node.size.height/5 + ' a' + node.size.width/10 + ',' + node.size.height/5 + ' 0 0,0 ' + node.size.width/10 + ',' + node.size.height/5 + ' l'+ node.size.width + ',0' + ' a' + node.size.width/10 + ',' + node.size.height/5 + ' 0 0,1 -' + node.size.width/10 + ',-' + node.size.height/5 + ' l0,-' + 4*node.size.height/5 + ' z'">
+</svg:path>
+<svg:path *ngIf="node.visible && !node.filterout && 'MEMO'===node.shape"
+        class="memo-node"
+        filter="url(#dropshadow)"
+        opacity="0.3"
+        [attr.d]="'M' + -node.size.width/2 + ',' + -node.size.height/2 + ' l0,' + 4*node.size.height/5 + ' a' + node.size.width/10 + ',' + node.size.height/5 + ' 0 0,0 ' + node.size.width/10 + ',' + node.size.height/5 + ' l'+ node.size.width + ',0' + ' a' + node.size.width/10 + ',' + node.size.height/5 + ' 0 0,1 -' + node.size.width/10 + ',-' + node.size.height/5 + ' l0,-' + 4*node.size.height/5 + ' z'"
+        [attr.fill]="node.color">
+</svg:path>
+<svg:rect  *ngIf="node.visible && !node.filterout && 'THUMBNAIL'===node.shape && node.thumbnail && node.thumbnail.length"
+        class="shape-node"
+        [attr.x]="-node.size.width/2"
+        [attr.y]="-node.size.height/2"
+        [attr.width]="node.size.width"
+        [attr.height]="node.size.height"
+        fill="#FEFEFE">
+</svg:rect>
+<svg:image *ngIf="node.visible && !node.filterout && 'THUMBNAIL'===node.shape && node.thumbnail && node.thumbnail.length>0"
+        class="shape-node"
+        [attr.x]="-node.size.width/2"
+        [attr.y]="-node.size.height/2"
+        [attr.width]="node.size.width"
+        [attr.height]="node.size.height"
+        stroke="#fafafa"
+        [attr.xlink:href]="node.thumbnail">
+</svg:image>
+<svg:text *ngIf="node.visible && !node.filterout && ('THUMBNAIL'===node.shape || 'Content'===node.type)"
+        class="node-label"
+        [attr.x]="-node.size.width/2"
+        [attr.y]="-node.size.height/2 - 4"
+        [attr.font-size]="node.font.size"
+        [attr.font-family]="node.font.family"
+        [attr.fill]="node.font.color"
+        text-anchor="start"
+        alignment-baseline="baseline">
+    {{(node.label.length > 36)? node.label.substr(0,35)+'...' : node.label}}
+</svg:text>
+<svg:text *ngIf="node.visible && !node.filterout && 'Topic'===node.type && 'THUMBNAIL'!==node.shape"
+        class="node-label"
+        [attr.font-size]="node.font.size"
+        [attr.font-family]="node.font.family"
+        [attr.fill]="node.font.color"
+        text-anchor="middle"
+        alignment-baseline="middle">
+    {{(node.label.length > 36)? node.label.substr(0,35)+'...' : node.label}}
+</svg:text>
+<svg:text *ngIf="node.visible && !node.filterout && node.description && 'Topic'!==node.type && 'THUMBNAIL'!==node.shape"
+        class="node-description"
+        [attr.x]="0"
+        [attr.y]="-node.size.height / 2"
+        [attr.width]="node.size.width"
+        [attr.height]="node.size.height"
+        [attr.font-size]="node.font.size"
+        [attr.font-family]="node.font.family"
+        [attr.fill]="node.font.color"
+        text-anchor="start"
+        alignment-baseline="middle">
+    {{node.description}}
+</svg:text>
+<svg:rect *ngIf="node.visible && !node.filterout && node.description && 'Topic'!==node.type && 'THUMBNAIL'!==node.shape"
+        class="cover-description"
+        [attr.x]="-node.size.width / 2"
+        [attr.y]="-node.size.height / 2"
+        [attr.width]="node.size.width"
+        [attr.height]="node.size.height"
+        fill="#fefefe"
+        opacity="0.01">
+</svg:rect>
+<svg:text *ngIf="node.visible && !node.filterout && node.linkCount>0"
+        class="link-count"
+        [attr.x]="node.size.width ? node.size.width/2 : node.size.radius"
+        [attr.y]="node.size.height ? -node.size.height/2 : -node.size.radius"
+        [attr.font-size]="node.font.size"
+        [attr.font-family]="node.font.family"
+        stroke="none"
+        fill="#d00000"
+        text-anchor="end">
+    {{node.linkCount}}
+</svg:text>
+  

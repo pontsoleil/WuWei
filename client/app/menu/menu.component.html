@@ -1,0 +1,430 @@
+<a id="open_controls"
+   (click)="openControlsClicked($event)"
+   mdbTooltip="{{ 'Control Buttons' | translate:lang }}" placement="right">
+  <span>&#9650;</span><!-- &#9660 -->
+</a>
+
+<a id="open_miniature"
+   (click)="openMiniatureClicked($event)"
+   mdbTooltip="{{ 'Miniature Canvas' | translate:lang }}" placement="left">
+  <span>&#9660;</span>
+</a>
+
+<a id="draw_mode" *ngIf="simulate"
+   (click)="toggleDrawMode($event)"
+   mdbTooltip="{{ 'Force Simulate' | translate:lang }}" placement="bottom">
+   <fa-icon [icon]="faArrowsAlt"></fa-icon>
+</a>
+<a id="draw_mode" *ngIf="!simulate"
+   (click)="toggleDrawMode($event)"
+   mdbTooltip="{{ 'Draw' | translate:lang }}" placement="bottom">
+   <fa-icon [icon]="faPencilRuler"></fa-icon>
+</a>
+
+<div id="page_name" *ngIf="page_name" class="text-right">
+{{ page_name }}
+</div>
+
+<div id="note_name" *ngIf="note_name" class="text-right">
+{{ note_name }}
+</div>
+
+<div id="language">
+  <mat-select name="lang"
+        [value]="lang"
+        (change)="onSelectChange($event, 'lang')"
+        placeholder="Select language"
+        style="text-align:center">
+    <mat-option *ngFor="let lang of languages"
+                [value]="lang.value" style="text-align:center">
+    {{ lang.label }}
+    </mat-option>
+  </mat-select>
+</div>
+
+<div id="status" class="wifi" [class.isOnline]="isOnline">
+  <span class="bar1"> </span>
+  <span class="bar2"> </span>
+  <span class="bar3"> </span>
+</div>
+
+<div id="controls"
+     class="hidden"
+     fxLayout
+     fxLayout.xs="column">
+  <div id="zoom"
+       mdbTooltip="{{ 'Zoom' | translate:lang }}" placement="top">
+    <i id="zoomin"
+       (click)="zoominClicked()"
+       class="fa fa-plus fa-lg fa-fw zoom-in"></i>
+    <i id="reset_view"
+       (click)="reset_viewClicked()">=</i>
+    <i id="zoomout"
+       (click)="zoomoutClicked()"
+       class="fa fa-minus fa-lg fa-fw zoom-out"></i>
+  </div>
+  <div id="play-pause"
+       *ngIf="'force'===svgId && simulate"
+       (click)="playPauseClicked()"
+       [ngClass]="{
+        'playing':playing,
+        'pausing':!playing
+       }">
+    <i *ngIf="playing" class="fa fa-pause fa-2x"></i>
+    <i *ngIf="!playing" class="fa fa-play fa-2x"></i>
+  </div>
+  <!--div id="fit"
+       (click)="clicked('fullscreen')">
+    <i class="icon fa fa-arrows-alt fa-2x"></i>
+    <p id="fullscreen">Full Screen</p>
+  </div-->
+  <div id="undo"
+       (click)="undoClicked()"
+       mdbTooltip="{{ 'Undo' | translate:lang }}" placement="top">
+    <i class="icon fa fa-reply fa-2x"></i>
+    <p id="p_undo">Undo</p>
+  </div>
+  <div id="redo"
+       (click)="redoClicked()"
+       mdbTooltip="{{ 'Redo' | translate:lang }}" placement="top">
+    <i class="icon fa fa-share fa-2x"></i>
+    <p id="p_redo">Redo</p>
+  </div>
+  <!-- <div id="Pagination"
+       class="pagination"
+       style="display: none;">
+    <span class="prev">Prev</span>
+    <span class="current tip_trigger" title="">1</span>
+    <span class="next">Next</span>
+  </div> -->
+</div>
+
+<div class="heading-menu">
+  <a href="#" title="">
+    <div class="menu-icon"
+         (click)="mainMenuClicked()">
+      <span class="bar1"> </span>
+      <span class="bar2"> </span>
+      <span class="bar3"> </span>
+    </div>
+  </a>
+  <a id="noteIcon" href="#"
+     (click)="noteClicked()"
+     mdbTooltip="{{ 'Notebook' | translate:lang }}" placement="bottom">
+    <i class="fa fa-book fa-lg fa-fw"></i>
+  </a>
+  <a id="pageIcon" href="#"
+     (click)="pageClicked()" 
+     mdbTooltip="{{ 'Pages' | translate:lang }}" placement="bottom">
+    <i class="fa fa-sticky-note-o fa-lg fa-fw"></i>
+  </a>
+  <a id="newIcon" href="#"
+     (click)="newClicked()"
+     mdbTooltip="{{ 'New' | translate:lang }}" placement="bottom">
+    <i class="fa fa-plus fa-lg fa-fw"></i>
+  </a>
+  <!-- <a href="#" title="flock"
+     (click)="clicked('flock')">
+    <i id="flockIcon" class="fa fa-object-group fa-lg fa-fw"></i>
+  </a> -->
+  <!-- <a href="#" title="copy"
+     (click)="clicked('copy')">
+    <i id="copyPasteIcon" class="fa fa-clone fa-lg fa-fw"></i>
+  </a> -->
+  <a id="filterIcon" href="#"
+     (click)="filterClicked()"
+     mdbTooltip="{{ 'Filter' | translate:lang }}" placement="bottom">
+    <i class="fa fa-filter fa-lg fa-fw"></i>
+  </a>
+  <a id="searchIcon" href="#"
+     (click)="searchClicked()"
+     mdbTooltip="{{ 'Search' | translate:lang }}" placement="bottom">
+    <i class="fa fa-search fa-lg fa-fw"></i>
+  </a>
+</div>
+
+<div id="noteMenu" class="pulldown" style="display: none;">
+  <span class="header">
+    <i class="fa fa-book fa-fw"
+        (mouseover)="mouseoverPulldown('noteMenu')"
+        (mouseout)="mouseoutPulldown('noteMenu', 'fa-book')"
+        (click)="closePulldown('noteMenu')"></i>
+    <span>{{ 'Notebook' | translate:lang }}</span>
+  </span>
+  <hr>
+  <div class="operators">
+    <div class="operator"
+         (click)="newNote()">
+      <i class="fa fa-square fa-fw"></i>
+      <span>{{ 'New' | translate:lang }}</span>
+    </div>
+    <div class="operator"
+         (click)="listNoteModal()">
+      <fa-icon [icon]="faBookOpen"></fa-icon>
+      <span>{{ 'Open' | translate:lang }}</span>
+    </div>
+    <div class="operator"
+         (click)="saveNoteModal('save')"
+         >
+      <span>{{ 'Save' | translate:lang }}</span>
+    </div>
+    <!-- <div *ngIf="hasNode && note_name"
+         class="operator"
+         (click)="saveNoteModal('save_as')">
+      <span>{{ 'Save As' | translate:lang }}</span>
+    </div> -->
+  </div>
+</div>
+
+<div id="pageMenu" class="pulldown" style="display: none;">
+  <span class="header">
+    <i class="fa fa-sticky-note-o fa-fw"
+       (mouseover)="mouseoverPulldown('pageMenu')"
+       (mouseout)="mouseoutPulldown('pageMenu', 'fa-sticky-note-o')"
+       (click)="closePulldown('pageMenu')"></i>
+    <span>{{ 'Pages' | translate:lang }}</span>
+  </span>
+  <hr>
+  <div class="operators">
+    <div class="operator"
+      (click)="listPageModal()">
+      <i class="fa fa-list fa-fw"></i>
+      <span>{{ 'List' | translate:lang }}</span>
+    </div>
+
+    <div class="operator"
+         (click)="addPage()">
+      <i class="fa fa-plus fa-fw"></i>
+      <span>{{ 'New Page' | translate:lang }}</span>
+    </div>
+    <!-- <div class="operator"
+         (click)="namePage())">
+      <span>{{ 'Page Name' | translate:lang }}</span>
+    </div> -->
+    <!-- <div class="operator"
+         (click)="clicked('listPage')">
+      <span>{{ 'List' | translate:lang }}</span>
+    </div> -->
+  </div>
+</div>
+
+<div id="newMenu" class="pulldown" style="display: none;">
+  <span class="header">
+    <i class="fa fa-plus fa-fw"
+      (mouseover)="mouseoverPulldown('newMenu')"
+      (mouseout)="mouseoutPulldown('newMenu', 'fa-pencil')"
+      (click)="closePulldown('newMenu')"></i>
+    {{ 'New' | translate:lang }}
+  </span>
+  <hr>
+  <div class="operators">
+    <div class="operator"
+         (click)="contentClicked()">
+      <i class="fa fa-th-large fa-fw"></i>
+      <span>{{ 'Content' | translate:lang }}</span>
+    </div>
+    <div class="operator"
+         (click)="topicClicked()">
+      <i class="fa fa-tag fa-fw"></i>
+      <span>{{ 'Topic' | translate:lang }}</span>
+    </div>
+    <div class="operator"
+         (click)="memoClicked()">
+      <i class="fa fa-sticky-note-o fa-fw"></i>
+      <span>{{ 'Memo' | translate:lang }}</span>
+    </div>
+    <div class="operator"
+         (click)="uploadClicked()">
+      <i class="fa fa-cloud-upload fa-fw"></i>
+      <span>{{ 'Upload' | translate:lang }}</span>
+    </div>
+  </div>
+</div>
+
+<div id="filterMenu" class="pulldown" style="display: none;">
+  <span class="header">
+    <i class="fa fa-filter fa-fw"
+       (mouseover)="mouseoverPulldown('filterMenu')"
+       (mouseout)="mouseoutPulldown('filterMenu', 'fa-filter')"
+       (click)="closePulldown('filterMenu')"></i>
+      {{ 'Filter' | translate:lang }}
+  </span>
+  <hr>
+  <div class="operators">
+    <div class="operator"
+         (click)="clicked('showAll')">
+      <span>{{ 'Show All' | translate:lang }}</span>
+    </div>
+    <div class="operator"
+         (click)="clicked('hideAll')">
+      <span>{{ 'Clear Screen' | translate:lang }}</span>
+    </div>
+  </div>
+</div>
+
+<svg:circle id="Editing"
+    r="32" stroke-width="4" stroke="rgba(65, 105, 225, 0.5)" fill="none"
+    opacity="0">
+</svg:circle>
+
+<svg:circle id="Start"
+    r="32" stroke-width="4" stroke="rgba(138, 43, 226, 0.5)" fill="none"
+    opacity="0">
+</svg:circle>
+
+<!-- menu for NOT Fixed -->
+<svg:g id="ContextMenu" class="collapsed" *ngIf="!simulate || !hoveredNode || !hoveredNode.fixed">
+  <svg:circle id="Hovered" r="32" stroke-width="8" stroke="rgba(237, 229, 229, 0.5)" fill="none"></svg:circle>
+  <svg:circle id="Selected"></svg:circle>
+  <svg:text id="MenuCMND" class="ContextMenu" x="10" y="-10">&#xf013;</svg:text>
+  <svg:text id="MenuINFO" class="ContextMenu" x="10" y="30">&#xf05a;</svg:text>
+  <svg:text id="MenuEDIT" class="ContextMenu" x="-30" y="30">&#xf044;</svg:text>
+  <svg:text id="MenuSEL"  class="ContextMenu" x="-30" y="-10">&#xf046;</svg:text>
+</svg:g>
+<!-- menu for Fixed -->
+<svg:g id="ContextMenu" class="collapsed" *ngIf="simulate && hoveredNode && hoveredNode.fixed">
+  <svg:circle id="Hovered" r="32" stroke-width="8" stroke="rgba(237, 229, 229, 0.5)" fill="none"></svg:circle>
+  <svg:circle id="Selected"></svg:circle>
+  <svg:text id="MenuCMND" class="ContextMenu" x="15" y="-5">&#xf013;</svg:text>
+  <svg:text id="MenuINFO" class="ContextMenu" x="10" y="30">&#xf05a;</svg:text>
+  <svg:text id="MenuEDIT" class="ContextMenu" x="-30" y="30">&#xf044;</svg:text>
+  <svg:text id="MenuSEL"  class="ContextMenu" x="-35" y="-5">&#xf046;</svg:text>
+  <svg:text id="MenuPIN"  class="ContextMenu" x="-8" y="-24">&#xf08d;</svg:text>
+</svg:g>
+
+<div id="contextCMND" class="contextMenu collapsed" *ngIf="hoveredNode">
+  <i class="toggler fa fa-cog fa-lg"
+     (click)="closeContext('CMND')"
+     (mouseover)="mouseoverContext('CMND')"
+     (mouseout)="mouseoutContext('CMND')"></i>
+  <hr>
+  <div class="operators">
+    <div *ngFor="let operation of supportedOperations"
+         [ngClass]="{'operator': true, 'danger': 'danger'===operation[3]}"
+         (click)="Context_Operate(operation[0])">
+      <i *ngIf="! isObject(operation[4])"
+         [ngClass]="operation[4]">
+      </i>
+      <a *ngIf="isObject(operation[4]) && operation[4].length > 1"
+         class="fa-stack fa-fw">
+        <i [ngClass]="operation[4][0]"></i>
+        <i [ngClass]="operation[4][1]"></i>
+      </a>
+      {{ operation[1] | translate:lang }}
+    </div>
+  </div>
+</div>
+
+<div id="contextEDIT" class="contextMenu collapsed" *ngIf="hoveredNode">
+  <i class="toggler fa fa-pencil-square-o fa-lg"
+      (click)="closeContext('EDIT')"
+      (mouseover)="mouseoverContext('EDIT')"
+      (mouseout)="mouseoutContext('EDIT')"></i>
+  <hr>
+  <div class="operators">
+    <div *ngFor="let operation of supportedOperations"
+          [ngClass]="{'operator': true, 'danger': 'danger'===operation[3]}"
+          (click)="Context_Operate(operation[0])">
+      <i *ngIf="! isObject(operation[4])"
+          [ngClass]="operation[4]">
+      </i>
+      <a *ngIf="isObject(operation[4]) && operation[4].length > 1"
+          class="fa-stack fa-fw">
+        <i [ngClass]="operation[4][0]"></i>
+        <i [ngClass]="operation[4][1]"></i>
+      </a>
+      {{ operation[1] | translate:lang }}
+    </div>
+  </div>
+</div>
+
+<div mdbModal #saveModal="mdb-modal" [config]="saveConfig" class="modal fade" id="saveModal"
+     tabindex="-1" role="dialog" aria-labelledby="saveModalLabel" aria-hidden="true">
+  <div class="modal-dialog cascading-modal">
+    <div class="modal-content">
+      <div class="modal-header light-blue darken-3 white-text">
+        <div class="title">
+          <h2>{{ 'Save' | translate:lang }}</h2>
+          <!-- <h2 *ngIf="'new'===NoteSaveMode">{{ 'New' | translate:lang }}</h2>
+          <h2 *ngIf="'save'===NoteSaveMode">{{ 'Save' | translate:lang }}</h2>
+          <h2 *ngIf="'save_as'===NoteSaveMode">{{ 'Save As' | translate:lang }}</h2> -->
+        </div>
+        <div *ngIf="hasNode" class="center">
+          <img id="noteMiniature" name="thumbnail" class="img-fluid"/>						
+          <a><div class="mask"></div></a>
+        </div>        
+        <button type="button" class="close" aria-label="Close"
+            (click)="saveModal.hide()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body" *ngIf="note">
+        <!-- <input *ngIf="'save'===NoteSaveMode" -->
+        <input
+            type="text" name="name"
+            [ngModel]="note.name" (change)="onNoteNameChange($event)"
+            placeholder="Enter note name."
+            required>
+        <!-- <input *ngIf="'new'===NoteSaveMode || 'save_as'===NoteSaveMode"
+            type="text" name="name"
+            placeholder="Enter note name."
+            [(ngModel)]="note.name" required> -->
+        <textarea
+            name="description" class="card-text"
+            placeholder="Enter note description."
+            [(ngModel)]="note.description"
+            matInput matTextareaAutosize
+            matAutosizeMinRows="2"
+            matAutosizeMaxRows="5">
+        </textarea>
+      </div>
+      <div class="modal-footer">
+        <div class="btn-group">
+          <button
+              (click)="saveNote(note)"
+              class="btn btn-sm btn-rounded waves-light"
+              [ngClass]="{'blue-gradient':note.name, 'gray-gradient':!note.name}"
+              [disabled]="!note.name"
+              mdbRippleRadius>
+            <i class="fa fa-floppy-o">
+              {{ 'Save' | translate:lang }}
+            </i>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div mdbModal #noteModal="mdb-modal" class="modal" id="noteModal">
+  <div class="modal-body container-fluid d-flex flex-row">
+    <button class="close" (click)="noteModal.hide()">
+      <i class="fa fa-times"></i>
+    </button>
+  
+    <app-note (noteEvent)="noteEvent($event)"></app-note>
+
+  </div>
+</div>
+
+<div mdbModal #pageModal="mdb-modal" class="modal" id="pageModal">
+  <div class="modal-body container-fluid d-flex flex-row">
+    <button class="close" (click)="pageModal.hide()">
+      <i class="fa fa-times"></i>
+    </button>
+  
+    <app-page (pageEvent)="pageEvent($event)"></app-page>
+
+  </div>
+</div>
+
+<div mdbModal #uploadModal="mdb-modal" tabindex="-1" role="dialog" 
+     class="modal fade" id="uploadModal" aria-hidden="true">
+  <button id="uploadModalClose" (click)="dismissUpload()"
+      type="button" class="close" aria-label="Close">
+    <span aria-hidden="true">&times;</span>
+  </button>
+  <app-upload></app-upload>
+</div>
+
+

@@ -1,0 +1,19 @@
+.container {
+  background: #c0c0c0;
+}
+.card {
+  color: #707070;
+  padding: 0;
+}
+button.close {
+  position: absolute;
+  top: 2px;
+  right: 20px;
+  color: #c0c0c0;
+  &:hover {
+    color: #ffffff;
+  }
+}
+// button[disabled] {
+//   background: #a0a0a0!important;
+// }

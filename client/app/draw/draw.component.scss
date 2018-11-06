@@ -1,0 +1,105 @@
+.wrapper {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: stretch;
+}
+/* ---------------------------------------------------
+  CONTENT STYLE
+----------------------------------------------------- */
+app-graph {
+  flex-grow: 1;
+  padding: 0px;
+  min-height: 100vh;
+  transition: all 0.3s;
+}
+/* ---------------------------------------------------
+  MENU STYLE
+----------------------------------------------------- */
+app-menu {
+  // flex-grow: 1;
+  padding: 0px;
+  transition: all 0.3s;
+  z-index: 1;
+}
+/* ---------------------------------------------------
+  FILTER STYLE
+----------------------------------------------------- */
+app-filter {
+  flex-grow: 0;
+  width: 260px;
+  margin: 0px;
+  padding: 0px;
+  background: rgba(248, 248, 248, 0.9);
+  overflow: hidden;
+  box-shadow: 0em 0.3em 0.5em rgba(0, 0, 0, 0.5);
+  -webkit-box-shadow: 0em 0.3em 0.5em rgba(0, 0, 0, 0.5);
+     -moz-box-shadow: 0em 0.3em 0.5em rgba(0, 0, 0, 0.5);
+      -ms-box-shadow: 0em 0.3em 0.5em rgba(0, 0, 0, 0.5);
+  z-index: 2;
+}
+/* ---------------------------------------------------
+  SEARCH STYLE
+----------------------------------------------------- */
+app-search {
+  flex-grow: 0;
+  min-width: 260px;
+  max-width: 260px;
+  padding: 0.2em;
+  background: rgba(248, 248, 248, 0.9);
+  overflow-x: hidden;
+  overflow-y: scroll;
+  box-shadow: 0em 0.3em 0.5em rgba(0, 0, 0, 0.5);
+  -webkit-box-shadow: 0em 0.3em 0.5em rgba(0, 0, 0, 0.5);
+     -moz-box-shadow: 0em 0.3em 0.5em rgba(0, 0, 0, 0.5);
+      -ms-box-shadow: 0em 0.3em 0.5em rgba(0, 0, 0, 0.5);
+  z-index: 2;
+}
+/* ---------------------------------------------------
+  INFO STYLE
+----------------------------------------------------- */
+app-info {
+  flex-grow: 0;
+  min-width: 260px;
+  max-width: 260px;
+  padding: 0.2em;
+  background: rgba(248, 248, 248, 0.9);
+  overflow-x: hidden;
+  overflow-y: scroll;
+  box-shadow: 0em 0.3em 0.5em rgba(0, 0, 0, 0.5);
+  -webkit-box-shadow: 0em 0.3em 0.5em rgba(0, 0, 0, 0.5);
+     -moz-box-shadow: 0em 0.3em 0.5em rgba(0, 0, 0, 0.5);
+      -ms-box-shadow: 0em 0.3em 0.5em rgba(0, 0, 0, 0.5);
+  z-index: 2;
+}
+/* ---------------------------------------------------
+  EDIT STYLE
+----------------------------------------------------- */
+app-edit {
+  flex-grow: 0;
+  min-width: 260px;
+  max-width: 260px;
+  padding: 0.2em;
+  background: rgba(248, 248, 248, 0.9);
+  overflow-x: hidden;
+  overflow-y: scroll;
+  box-shadow: 0em 0.3em 0.5em rgba(0, 0, 0, 0.5);
+  -webkit-box-shadow: 0em 0.3em 0.5em rgba(0, 0, 0, 0.5);
+     -moz-box-shadow: 0em 0.3em 0.5em rgba(0, 0, 0, 0.5);
+      -ms-box-shadow: 0em 0.3em 0.5em rgba(0, 0, 0, 0.5);
+  z-index: 2;
+}
+/* ---------------------------------------------------
+  MEDIAQUERIES
+----------------------------------------------------- */
+/*@media (max-width: 768px) {
+  info {
+      margin-left: -260px;
+  }
+  info.active {
+      margin-left: 0;
+  }
+}*/

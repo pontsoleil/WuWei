@@ -1,0 +1,14 @@
+{
+  "extends": "../tsconfig.json",
+  "compilerOptions": {
+    "allowJs": true,
+    "outDir": "../dist/public",
+    "module": "es2015",
+    "baseUrl": "",
+    "types": ["node", "chrome"]
+  },
+  "exclude": [
+    "test.ts",
+    "**/*.spec.ts"
+  ]
+}

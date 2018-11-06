@@ -1,0 +1,14 @@
+<form *ngIf='token == null' (ngSubmit)='login()'>
+  <div class='form-group'>
+    <label for='login'>Login</label>
+    <input type='text' class='form-control' [(ngModel)]='user.login' name='login' id='login' required>
+  </div>
+  <div class='form-group'>
+    <label for='password'>Password</label>
+    <input type='password' class='form-control' [(ngModel)]='user.password' name='password' id='password' required>
+  </div>
+  <button type="submit" class="btn btn-success">Login</button>
+</form>
+<form *ngIf='token' (ngSubmit)='logout()'>
+  <button type="submit" class="btn btn-success">Logout</button>
+</form>

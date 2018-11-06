@@ -1,0 +1,51 @@
+<form class="form">
+  <div class="form-group">
+    <input type="search"
+           class="form-control"
+           placeholder="Enter search string"
+           [formControl]="searchField">
+  </div>
+</form>
+
+<div class="loading" *ngIf="loading">
+  <i class="fa fa-circle-o-notch fa-spin fa-3x fa-fw"></i>
+  <span class="sr-only">Loading...</span>
+</div>
+
+<!-- 
+  id: {
+      kind: string, // "youtube#video",
+      videoId: string // "OaXiTwgkDAw"
+  },
+  snippet: {
+      publishedAt: string, // "2018-03-23T10:00:02.000Z",
+      channelId: string, // "UC1oPBUWifc0QOOY8DEKhLuQ",
+      title: string, // "BiSH / PAiNT it BLACK[OFFICIAL VIDEO]",
+      description: string, // "Major 3rd Single “PAiNT it BLACK” 2018.03.28 OUT!! http://amzn.to/2IJlL2A \"\"楽器を持たないパンクバンド\"\"BiSHのニューシングル テレビアニメ「ブラッククロ...",
+      thumbnails: {
+          default: {
+              url: string, // "https://i.ytimg.com/vi/OaXiTwgkDAw/default.jpg",
+              width: number, // 120,
+              height: number // 90
+          },
+      },
+      channelTitle: string, // "avex",
+      liveBroadcastContent: string // "none"
+  }
+-->
+<ul class="list-group">
+  <li class="list-group-item"
+      *ngFor="let video of results | async">
+    <img src="{{video.snippet.thumbnails.default.url}}"
+         (click)="showDetail(video)">
+    <div class="content">{{video.snippet.title}}</div>
+    <div class="action">
+      <a>
+        <i id="{{video.id.videoId}}"
+          class="fa fa-youtube fa-lg fa-fw"
+          (click)="videorecord(video)">
+        </i>
+      </a>
+    </div>
+  </li>
+</ul>

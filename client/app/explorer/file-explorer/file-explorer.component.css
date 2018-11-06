@@ -1,0 +1,39 @@
+:host {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.file-or-folder {
+  padding: 8px;
+  overflow: hidden;
+}
+
+.file-or-folder-icon {
+  width: 50px;
+  height: 50px;
+  font-size: 50px;
+}
+
+.pointer {
+  cursor: pointer;
+}
+
+.spacer {
+  flex: 1 1 auto;
+}
+
+.fa,
+.fa-stack {
+  color: rgb(200, 200, 200);
+}
+.fa:hover {
+  color: rgb(77, 179, 205);
+  text-shadow: 0em 0.2em 0.3em rgba(0, 0, 0, 0.5);
+}

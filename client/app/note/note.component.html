@@ -1,0 +1,57 @@
+<div id="modalContainer" class="flex-center" *ngIf="loading">
+  <div id="modalSpinner"
+      class="preloader-wrapper big active flex-center">
+    <div class="spinner-layer spinner-blue-only flex-center">
+      <div class="circle-clipper left">
+        <div class="circle"></div>
+      </div>
+      <div class="gap-patch">
+        <div class="circle"></div>
+      </div>
+      <div class="circle-clipper right">
+        <div class="circle"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div id="listContainer" *ngIf="!loading" class="flex-center">
+  <div [attr.id]="'note' + note._id"
+      class="card card-cascade narrower" *ngFor="let note of notes">
+    <form #listForm="ngForm">
+      <div class="view overlay hm-white-slight waves-light" mdbRippleRadius>
+        <img class="noteMiniature"
+          [attr.id]="'img' + note._id"
+          [attr.title]="note.description"/>
+        <a><div class="mask"></div></a>
+      </div>
+      <div class="card-body text-center">
+        <input class="card-title" type="text" name="name"
+            placeholder="note name." [(ngModel)]="note.name" disabled>
+        <div class="btn-group d-flex justify-content-center p-2">
+          <button (click)="loadNote(note)"
+                  class="btn btn-sm blue-gradient btn-rounded waves-light"
+                  mdbRippleRadius>  
+            <!-- <i class="fa fa-cloud-download"> -->
+            <fa-icon [icon]="faBookOpen"></fa-icon>
+            {{ 'Open' | translate:lang }}
+            <!-- </i> -->
+          </button>
+          <button (click)="deleteNote(note)"
+                  class="btn btn-sm peach-gradient btn-rounded waves-light"
+                  mdbRippleRadius>
+            <i class="fa fa-trash">{{ 'Delete' | translate:lang }}</i>
+          </button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+
+<div id="note_thumbnail">
+  <svg id="noteMiniSvg">
+    <g id="noteMiniCanvas"></g>
+  </svg>
+</div>
+  

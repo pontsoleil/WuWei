@@ -1,0 +1,74 @@
+<!--Card-->
+<div class="card">
+  <!--Card image-->
+  <div class="gradient-card-header cloudy-knoxville-gradient text-center">
+    <span class="font-weight-bold heading">{{ 'Search' | translate:lang }}</span>
+    <ul class="menu nav md-pills pills-primary">
+      <li class="nav-item">
+        <a id="ISO_PC295" class="nav-link" data-toggle="tab"
+          [ngClass]="{'selected': 'ISO_PC295'===selectedSearch}"
+          (click)="clicked('ISO_PC295')">
+          <span class="font-weight-bold">
+            ISO/PC295
+          </span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a id="youTube" class="nav-link" data-toggle="tab"
+            [ngClass]="{'selected': 'youTube'===selectedSearch}"
+            (click)="clicked('youTube')">
+          <span class="font-weight-bold">
+            <i class="fa fa-youtube "></i> YouTube
+          </span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a id="googleBooks" class="nav-link" data-toggle="tab"
+            [ngClass]="{'selected': 'googleBooks'===selectedSearch}"
+            (click)="clicked('googleBooks')">
+          <span class="font-weight-bold">
+            <i class="fa fa-google "></i>oogleBooks
+          </span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a id="iTunes" class="nav-link" data-toggle="tab"
+            [ngClass]="{'selected': 'iTunes'===selectedSearch}"
+            (click)="clicked('iTunes')">
+          <span class="font-weight-bold">
+            <i class="fa fa-apple "></i> iTunes
+          </span>
+        </a>
+      </li>
+    </ul>
+  </div>
+  <!--/.Card image-->
+  <!--Card content-->
+  <div class="card-body">
+    <search-pc295 *ngIf="'ISO_PC295'===selectedSearch"
+      (pc295Event)="pc295Event($event)">
+    </search-pc295>
+
+    <search-youtube *ngIf="'youTube'===selectedSearch"
+      (youtubeEvent)="youtubeEvent($event)">
+    </search-youtube>
+    
+    <search-google-books *ngIf="'googleBooks'===selectedSearch"
+      (googleEvent)="googleEvent($event)">
+    </search-google-books>
+
+    <search-itunes *ngIf="'iTunes'===selectedSearch"
+      (itunesEvent)="itunesEvent($event)">
+    </search-itunes>
+
+  </div>
+  <!--/.Card content-->
+  <a (click)="searchDismiss()">
+    <i id="searchDismiss" class="fa fa-times fa-lg fa-fw"></i>
+  </a>
+  <!-- FILTER BUTTON -->
+  <a id="filterOpen" (click)="filterOpen()">
+    <i class="fa fa-filter fa-lg fa-fw"></i>
+  </a>
+</div>
+<!--/.Card-->

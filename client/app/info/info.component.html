@@ -1,0 +1,19 @@
+<info-generic *ngIf="!infoMode"
+  [node]="node"
+  [resource]="resource"
+  (genericEvent)="genericEvent($event)">
+</info-generic>
+
+<info-pc295 *ngIf="'ISO_PC295'===infoMode"
+  [node]="node"
+  [resource]="resource"
+  (pc295Event)="pc295Event($event)">
+</info-pc295>
+
+<a (click)="editOpen()" *ngIf="nodeOnScreen">
+  <i id="editOpen" class="fa fa-edit fa-lg fa-fw"></i>
+</a>
+
+<a (click)="infoDismiss()">
+  <i id="infoDismiss" class="fa fa-times fa-lg fa-fw"></i>
+</a>

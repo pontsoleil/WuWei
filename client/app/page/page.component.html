@@ -1,0 +1,80 @@
+<div id="modalContainer" class="flex-center" *ngIf="loading">
+  <div id="modalSpinner"
+      class="preloader-wrapper big active flex-center">
+    <div class="spinner-layer spinner-blue-only flex-center">
+      <div class="circle-clipper left">
+        <div class="circle"></div>
+      </div>
+      <div class="gap-patch">
+        <div class="circle"></div>
+      </div>
+      <div class="circle-clipper right">
+        <div class="circle"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="listContainer" *ngIf="!loading" class="flex-center">
+  <div [attr.id]="'page_' + page.pp"
+      class="card card-cascade narrower" *ngFor="let page of pages">
+    <form #listForm="ngForm">
+      <div class="view overlay hm-white-slight waves-light" mdbRippleRadius>
+        <img class="pageMiniature"
+          [attr.id]="'img_' + page.pp"
+          [attr.title]="page.name"/>
+        <a><div class="mask"></div></a>
+      </div>
+      <div class="card-body text-left">
+        <span class="flex-grow-1">page {{ page.pp }}</span>
+        <a class="edit_name" (click)="editName(page)">
+          <i class="fa fa-pencil fa-fw"></i>
+        </a>
+        <a class="save_edit" (click)="saveEdit(page)" *ngIf="editing">
+          <i class="fa fa-check fa-fw"></i>
+        </a>
+        <a class="cancel_edit" (click)="cancelEdit(page)" *ngIf="editing">
+          <i class="fa fa-times fa-fw"></i>
+        </a>
+        <input type="text" name="name" *ngIf="editing || page.name"
+            placeholder="Enter page name" [(ngModel)]="page.name">
+        <div class="btn-group d-flex justify-content-center p-2">
+          <button (click)="openPage(page)"
+                  class="btn btn-sm blue-gradient btn-rounded waves-light"
+                  mdbRippleRadius>  
+            <fa-icon [icon]="faBookOpen"></fa-icon>
+            {{ 'Open' | translate:lang }}
+          </button>
+          <button (click)="deletePage(page)"
+                  class="btn btn-sm peach-gradient btn-rounded waves-light"
+                  mdbRippleRadius>
+            <i class="fa fa-trash">{{ 'Delete' | translate:lang }}</i>
+          </button>
+        </div>
+      </div>
+    </form>
+  </div>
+
+  <!-- <div [attr.id]="'page_' + (pages.length + 1)"
+      class="card card-cascade narrower">
+    <form #newForm="ngForm">
+      <div class="card-body text-center">
+        <input class="card-title" type="text" name="name"
+            placeholder="Enter page name" [(ngModel)]="page.name" disabled>
+        <div class="btn-group">
+          <button (click)="addPage()"
+                  class="btn btn-sm blue-gradient btn-rounded waves-light"
+                  mdbRippleRadius>  
+            <i class="fa fa-plus">{{ 'Add' | translate:lang }}</i>
+          </button>
+        </div>
+      </div>
+    </form>
+  </div> -->
+</div>
+
+<div id="page_thumbnail">
+  <svg id="pageMiniSvg">
+    <g id="pageMiniCanvas"></g>
+  </svg>
+</div>

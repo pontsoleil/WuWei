@@ -1,0 +1,71 @@
+<section class="row justify-content-center row justify-content-center mx-auto my-4">
+  <!--Form with header-->
+  <div class="card col-10 col-md-8 col-lg-6">
+    <button type="button" class="close" aria-label="Close" (click)="close()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+    <!--Header-->
+    <div class="header pt-3 blue-gradient">
+      <div class="row d-flex justify-content-center">
+        <h3 class="white-text mb-3 pt-3 font-weight-bold">Sign in</h3>
+      </div>
+    </div>
+    <!--/.Header-->
+    <!--Body-->
+    <div class="card-body mx-4 mt-4">
+      <form class="card-content" [formGroup]="signinForm"
+            (ngSubmit)="onSignin(signinForm.value)">
+        <div class="md-form">
+          <i class="fa fa-user prefix"></i>
+          <input mdbActive type="text" formControlName="name" class="form-control">
+          <label for="name">Name</label>
+          <p *ngIf="!name.valid && name.touched" class="text-danger">
+            <span *ngIf="name_.errors.required">Name required.</span>
+          </p>
+        </div>
+        <div class="md-form">
+          <i class="fa fa-lock prefix"></i>
+          <input mdbActive type="password" formControlName="password" class="form-control">
+          <label for="password">Password</label>
+          <p *ngIf="!password.valid && password.touched" class="text-danger">
+            <span *ngIf="name_.errors.required">Password required.</span>
+          </p>
+          <p class="font-small grey-text d-flex justify-content-end">Forgot
+            <a routerLink="/lost-password" routerLinkActive="active"
+               class="dark-grey-text ml-1 font-weight-bold"> Password?</a>
+          </p>
+        </div>
+        <!--Grid row-->
+        <div class="row d-flex align-items-center mb-4">
+          <!--Grid column-->
+          <div class="col-md-1 col-md-5 d-flex align-items-start">
+            <div class="text-center">
+              <button type="submit"
+                      [disabled]="signinForm.pristine || !name.valid || !password.valid"
+                      class="btn btn-rounded z-depth-1a waves-light"
+                      [ngClass]="{'blue-gradient':!signinForm.pristine && name.valid && password.valid,
+                                  'gray-gradient':signinForm.pristine || !name.valid || !password.valid}"
+                      mdbWavesEffect>
+                <i class="fa fa-sign-in"></i>
+                Sign in
+              </button>
+            </div>
+          </div>
+          <!--/.Grid column-->
+          <!--Grid column-->
+          <div class="col-md-7">
+            <p class="font-small grey-text d-flex justify-content-end mt-3">Don't have an account?
+              <a routerLink="/signup" routerLinkActive="active"
+                 class="dark-grey-text ml-1 font-weight-bold">Sign up</a>
+            </p>
+          </div>
+          <!--/.Grid column-->
+        </div>
+        <!--/.Grid row-->
+      </form>
+    </div>
+    <!--/.Body-->
+  </div>
+</section>
+
+

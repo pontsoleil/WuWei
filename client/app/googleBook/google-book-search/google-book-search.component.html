@@ -1,0 +1,37 @@
+<div class="md-card container">
+  <div class="m-3 text-center">
+    <form class="form-inline d-flex justify-content-center"
+          (ngSubmit)="doSearch()">
+      <div class="form-group">
+        <input type="search"
+               class="form-control"
+               placeholder="Enter search string"
+               name="search"
+               [(ngModel)]="term"
+               required>
+      </div>
+      <button type="submit"
+              class="btn btn-dark">
+        Search
+      </button>
+    </form>
+    <hr />
+    <div class="text-center">
+      <p *ngIf="googleBooksService.initialised && googleBooksService.loading"
+          class="lead">Loading...</p>
+      <p *ngIf="googleBooksService.initialised && !googleBooksService.loading && googleBooksService.books?.length === 0"
+          class="lead">No results returned</p>
+      <p *ngIf="!googleBooksService.initialised"
+          class="lead">Enter a search string above and press search</p>
+    </div>
+  </div>
+
+  <app-google-book-list [books]="googleBooksService.books"></app-google-book-list>
+
+  <div class="d-flex justify-content-center">
+    <app-pager *ngIf="googleBooksService.initialised && !googleBooksService.loading && googleBooksService.books?.length > 0"
+               [page]="googleBooksService.page"
+               [totalPages]="googleBooksService.totalPages"
+               (changePage)="googleBooksService.page = $event"></app-pager>
+  </div>
+</div>

@@ -1,0 +1,66 @@
+<section class="row justify-content-center mx-auto my-4">
+  <!--Form with header-->
+  <div class="card col-10 col-md-8 col-lg-6">
+    <button type="button" class="close" aria-label="Close" (click)="close()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+    <!--Header-->
+    <div class="header pt-3 blue-gradient">
+      <div class="row d-flex justify-content-center">
+        <h3 class="white-text mb-3 pt-3 font-weight-bold">Account Settings</h3>
+      </div>
+    </div>
+    <!--/.Header-->
+    <!--Body-->
+    <div class="card-body mx-4 mt-4">
+      <!-- Content -->
+      <div class="card-content" *ngIf="!auth.loggedIn">
+        You are not signed in.
+      </div>
+      <form class="card-content" [formGroup]="accountForm" *ngIf="auth.loggedIn"
+            (ngSubmit)="onSaveSetting(accountForm.value)">
+        <div class="md-form">
+          <i class="fa fa-user prefix"></i>
+          <input mdbActive type="text"
+                formControlName="name" class="form-control"
+                [ngModel]="currentUser.name">
+          <label for="name">Sign-in Name</label>
+          <p *ngIf="!name.valid && name.touched" class="text-danger">
+            <span *ngIf="name_.errors.required">Name required.</span>
+          </p>
+        </div>
+        <div class="md-form">
+          <i class="fa fa-envelope prefix"></i>
+          <input mdbActive type="email" 
+                formControlName="email" class="form-control"
+                [ngModel]="currentUser.email">
+          <label for="email">Email</label>
+          <p *ngIf="!email.valid && email.touched" class="text-danger">
+            <span *ngIf="email_.errors.required">E-mail required.</span>
+          </p>
+        </div>
+        <div class="md-form">
+          <i class="fa fa-user-circle prefix"></i>
+          <input mdbActive type="text"
+                formControlName="nickname" class="form-control"
+                [ngModel]="currentUser.nickname">
+          <label for="nickname">Nickname</label>
+          <p *ngIf="!nickname.valid && nickname.touched" class="text-danger">
+            <span *ngIf="nickname_.errors.required">Nickname required.</span>
+          </p>
+        </div>
+        <div class="text-center">
+          <button type="submit"
+              class="btn btn-rounded z-depth-1a waves-light"
+              [ngClass]="{'blue-gradient': !accountForm.pristine && !name_.errors && !email_.errors && !nickname_.errors,
+                          'gray-gradient': accountForm.pristine || !!name_.errors || !!email_.errors || !!nickname_.errors}"
+              [disabled]="accountForm.pristine || !!name_.errors || !!email_.errors || !!nickname_.errors"
+              mdbRippleRadius>
+            Update
+          </button>
+        </div>
+      </form>
+    </div>
+    <!--/.Body-->
+  </div>
+</section>

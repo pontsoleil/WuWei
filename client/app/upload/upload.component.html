@@ -1,0 +1,88 @@
+<div class="modal-dialog cascading-modal">
+  <div class="modal-content">
+    <div class="modal-header blue-gradient white-text">
+      <h1 mdb-dialog-title>{{ 'Upload' | translate:lang }}</h1>
+    </div>
+    <div class="modal-body">
+      <div class="file-field">
+        <a class="btn-floating blue-gradient mt-0 float-left">
+          <i class="fa fa-cloud-upload" aria-hidden="true"></i>
+          <input type="file" accept="*/*"
+                  (change)="onInputChange($event)"
+                  class="form-control-file">
+        </a>
+        <div class="file-path-wrapper">
+          <input class="file-path validate" type="text" placeholder="Upload your file">
+        </div>
+      </div>
+      <div class="progress">
+        <div class="progress-bar aqua-gradient" role="progressbar"
+             [ngStyle]="{'width': uploadedPercentage}" aria-valuenow="{{ uploadedPrct }}"
+             aria-valuemin="0" aria-valuemax="100"></div>
+      </div>
+      <div *ngIf="uploading" class="flex-center">
+        <div class="preloader-wrapper big active flex-center">
+          <div class="spinner-layer spinner-blue-only flex-center">
+            <div class="circle-clipper left">
+              <div class="circle"></div>
+            </div>
+            <div class="gap-patch">
+              <div class="circle"></div>
+            </div>
+            <div class="circle-clipper right">
+              <div class="circle"></div>
+            </div>
+          </div>
+        </div>
+        {{ 'Uploading' | translate:lang }}...
+      </div>
+      <div *ngIf="showMessage" class="row message d-flex justify-content-around">
+        <img *ngIf="imgUrl"
+            src="{{ imgUrl }}"
+            (click)="openWindow(srcUrl)"
+            [attr.width]="width" [attr.height]="height">
+        <i *ngIf="!imgUrl && mimeType && !isOffice"
+            (click)="openWindow(srcUrl)"
+            class ="fa fa-fw fa-3x"
+            [ngClass]="{
+              'fa-file-audio-o': isFile === 'audio',
+              'fa-file-image-o': isFile === 'image',
+              'fa-file-text-o': isFile === 'text',
+              'fa-file-video-o': isFile === 'video',
+              'fa-file-o': isFile === ''
+            }"
+            width=64 height=64 area-hidden="true"></i>
+        <i *ngIf="!imgUrl && mimeType && isOffice"
+            (click)="openWindow(srcUrl)"
+            class ="fa fa-fw fa-3x"
+            [ngClass]="{
+              'fa-file-word-o': isOffice === 'Word',
+              'fa-file-powerpoint-o': isOffice === 'Powerpoint',
+              'fa-file-excel-o': isOffice === 'Excel'
+            }"
+            width=64 height=64 area-hidden="true"></i>
+        <ul>
+          <li>{{ message }}</li>
+          <li>
+            <ul>
+              <li *ngIf="featureFormat">{{ featureFormat }}</li>
+              <li *ngIf="mimeType">{{ mimeType }}</li>
+              <li *ngIf="mimeType && mimeType.indexOf('image') == 0 && geometry">{{ geometry }}</li>
+              <li *ngIf="size">{{ size }}</li>
+              <li *ngIf="createdDate">{{ createdDate }}</li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <div class="modal-footer flex-center">
+      <button
+          type="button" (click)="onUpload()"
+          class="btn blue-gradient btn-rounded z-depth-1a waves-light"
+          [disabled]="''===fileName"
+          mdbWavesEffect mdbRippleRadius>
+        {{ 'Upload' | translate:lang }}
+      </button>
+    </div>
+  </div>
+</div>

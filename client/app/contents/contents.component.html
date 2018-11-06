@@ -1,0 +1,161 @@
+<app-loading [condition]="isLoading"></app-loading>
+
+<div class="card">
+  <h3 class="card-header">Upload</h3>
+  <div class="card-block">
+    <div class="container">
+
+      <div class="row">
+        <div class="col-md-6">
+          <form>
+            <div class="form-group">
+              <label for="multiple">Multiple</label>
+              <input type="file" class="form-control file-select" name="multiple"
+                     ng2FileSelect
+                     multiple
+                     [uploader]="uploader">
+            </div>
+          </form>
+        </div>
+        <div class="col-md-6">
+          <form>
+            <div class="form-group">
+              <label for="single">Single</label>
+              <input type="file" class="form-control file-select" name="single"
+                     ng2FileSelect
+                     [uploader]="uploader">
+            </div>
+          </form>
+        </div>
+      </div>
+      <div class="row">
+        <span>Queue length: {{ uploader?.queue?.length }}</span>
+        <table class="table">
+          <thead>
+            <tr>
+              <th width="50%">Name</th>
+              <th>Size</th>
+              <th>Progress</th>
+              <th>Status</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let item of uploader.queue">
+              <td><strong>{{ item.file.name }}</strong></td>
+              <td nowrap>{{ item.file.size/1024/1024 | number:'.2' }} MB</td>
+              <td>
+                <div class="progress" style="margin-bottom: 0;">
+                  <div class="progress-bar" role="progressbar"
+                    [ngStyle]="{ 'width': item.progress + '%' }">{{ item.progress }}</div>
+                </div>
+              </td>
+              <td class="text-center">
+                <span *ngIf="item.isSuccess">
+                  <i class="glyphicon glyphicon-ok">OK</i>
+                </span>
+                <span *ngIf="item.isCancel">
+                  <i class="glyphicon glyphicon-ban-circle">Canceled</i>
+                </span>
+                <span *ngIf="item.isError">
+                  <i class="glyphicon glyphicon-remove">Error</i>
+                </span>
+              </td>
+              <td nowrap>
+                <button type="button" class="btn btn-success btn-xs"
+                  (click)="item.upload()"
+                  [disabled]="item.isReady || item.isUploading || item.isSuccess">
+                  <span class="glyphicon glyphicon-upload"></span> Upload
+                </button>
+                <button type="button" class="btn btn-warning btn-xs"
+                  (click)="item.cancel()" [disabled]="!item.isUploading">
+                  <span class="glyphicon glyphicon-ban-circle"></span> Cancel
+                </button>
+                <button type="button" class="btn btn-danger btn-xs"
+                  (click)="item.remove()">
+                  <span class="glyphicon glyphicon-trash"></span> Remove
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="row">
+        <span>Queue progress:</span>
+        <div class="progress col-md-12">
+          <div class="progress-bar" role="progressbar" [ngStyle]="{ 'width': uploader.progress + '%' }"></div>
+        </div>
+      </div>
+      <div class="row">
+        <button type="button" class="btn btn-success btn-s"
+          (click)="uploader.uploadAll()"
+          [disabled]="!uploader.getNotUploadedItems().length">
+          <span class="glyphicon glyphicon-upload"></span> Upload all
+        </button>
+        <button type="button" class="btn btn-warning btn-s"
+          (click)="uploader.cancelAll()" [disabled]="!uploader.isUploading">
+          <span class="glyphicon glyphicon-ban-circle"></span> Cancel all
+        </button>
+        <button type="button" class="btn btn-danger btn-s"
+          (click)="uploader.clearQueue()"
+          [disabled]="!uploader.queue.length">
+          <span class="glyphicon glyphicon-trash"></span> Remove all
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="card-header">
+    <span class="fa fa-refresh fa-2x" title="Refresh" (click)="getFiles()">
+    </span>
+  </div>
+  <div class="card-block">
+    <div class="container">
+
+<!--       <span>A trusted URL:</span>
+      <a class="e2e-trusted-url" [href]="safeUrl">Click me</a>
+      <span>A dangerous URL:</span>
+      <a class="e2e-dangerous-url" [href]="url">Click me</a>
+-->
+      <div class="row">
+        <!-- <div class="col-md-4"> -->
+        <!-- <audio #player style="width: 100%" controls="controls"
+          [src]="safeSoundUrl"> Your browser does not support the audio element / audio format.</audio>
+        <button (click)="updateSoundUrl()">Click to add sound</button> -->
+
+        <!-- <span>{{ videoUrl }}</span> -->
+        <!-- <input type="text" [(ngModel)]="videoId" value="">
+        <button (click)="updateVideoUrl()">Click to add YouTube</button>
+        <br> -->
+        <!-- <iframe #contentsIframe class="e2e-iframe-trusted-src"
+          [src]="iframeUrl" [style] ="iframeStyle">
+        </iframe> -->
+        <!-- </div>
+        <div class="col-md-8"> -->
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Thumb</th>
+                <th width="50%">Name</th>
+                <th>Size</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let file of files">
+                <td>
+                  <a (click)="openWindow(file.url)" target ="wuwei">
+                    <img [src]="file.thumb" width="64px">
+                  </a>
+                </td>
+                <td>{{ file.name }}</td>
+                <td nowrap>{{ file.size }}</td>
+              </tr>
+            </tbody>
+          </table>
+
+        <!-- </div> -->
+
+    </div>
+  </div>
+</div>
+</div>

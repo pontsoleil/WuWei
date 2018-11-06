@@ -1,0 +1,175 @@
+<app-loading [condition]="isLoading"></app-loading>
+
+<app-toast [message]="toast.message"></app-toast>
+
+<div class="card" *ngIf="isAdding || isAnnotating">
+  <h4 class="card-header" *ngIf="isAdding"> Add new Resource</h4>
+  <h4 class="card-header" *ngIf="isAnnotating"> Add new TextualBody</h4>
+  <div class="card-block">
+    <div class="form-group" *ngIf="isAnnotating">
+      <input type="text" value="target: {{target.name}}({{target.id}})" style="width: 100%; border: none;" disabled>
+    </div>
+    <form class="form-inline" [formGroup]="addContentForm" style="text-align:center">
+      <div class="form-group" *ngIf="isAdding">
+        <input class="form-control" type="text" name="name" formControlName="name" placeholder="name">
+      </div>
+      <div class="form-group" *ngIf="isAdding">
+        <input class="form-control" type="text" name="id" formControlName="id" placeholder="id">
+      </div>
+      <div class="form-group" *ngIf="isAdding">
+        <select class="form-control selectpicker" name="type" formControlName="type" [(ngModel)]="selectedItem" #item (change)="onChange(item.value)">
+          <option value="" disabled>Select Type</option>
+          <option *ngFor="let x of types" [ngValue]="x.name">{{x.name}}</option>
+        </select>
+      </div>
+      <div class="form-group" *ngIf="isAdding">
+        <input class="form-control" type="text" name="format" formControlName="format" placeholder="format">
+      </div>
+      <div class="form-group" *ngIf="isAnnotating">
+        <textarea class="form-control" name="value" formControlName="value" placeholder="value"> </textarea>
+      </div>
+      <div class="form-group" *ngIf="isAnnotating">
+        <select class="form-control selectpicker" name="purpose" formControlName="purpose" ng-model="option">
+          <option value="" disabled>Select Purpose</option>
+          <option *ngFor="let x of motivations" [ngValue]="x.name">{{x.name}}</option>
+        </select>
+      </div>
+      <button class="btn btn-sm btn-primary" *ngIf="isAdding || isAnnotating" (click)="addContent()" [disabled]="!addContentForm.valid">
+        <i class="fa fa-floppy-o"> </i> Add</button>
+      <button class="btn btn-sm btn-warning" *ngIf="isAdding || isAnnotating" (click)="cancelEditing()">
+        <i class="fa fa-times"> </i> Cancel</button>
+    </form>
+  </div>
+</div>
+
+<div class="card" *ngIf="!isLoading">
+  <h4 class="card-header" *ngIf="!isEditing">Current resources ({{resources.length}})
+    <button class="btn btn-sm btn-primary" *ngIf="!isAdding" (click)="enableAdding()">
+      <i class="fa fa-plus"> </i> Add</button>
+  </h4>
+  <h4 class="card-header" *ngIf="isEditing">Edit {{resource.type}}</h4>
+  <div class="card-block">
+    <table class="table table-bordered table-striped">
+      <thead class="thead-default" *ngIf="!isEditing">
+        <tr>
+          <th>type / purpose</th>
+          <th>name / value</th>
+          <th>id(url)</th>
+          <th>format</th>
+          <th>by</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody *ngIf="resources.length === 0">
+        <tr>
+          <td colspan="6">There are no resources in the DB. Add a new resource above.</td>
+        </tr>
+      </tbody>
+      <tbody *ngIf="!isEditing">
+        <tr *ngFor="let resource of resources">
+          <td *ngIf="'TextualBody'!==resource.type">{{resource.type}}</td>
+          <td *ngIf="'TextualBody'===resource.type">{{resource.purpose}}</td>
+          <td style="text-align:left" *ngIf="'TextualBody'!==resource.type">{{resource.name}}</td>
+          <td style="text-align:left" *ngIf="'TextualBody'===resource.type">{{resource.value}}</td>
+          <td style="text-align:left" *ngIf="'TextualBody'!==resource.type">{{resource.id}}</td>
+          <td style="text-align:left" *ngIf="'TextualBody'===resource.type">&nbsp;</td>
+          <td>{{resource.format}}</td>
+          <td>{{resource.creator.name || ""}}</td>
+          <td>
+            <div class="btn-group" style="text-align:center">
+              <button class="btn btn-sm btn-warning" (click)="enableEditing(resource)">
+                <i class="fa fa-pencil"></i></button>
+              <button class="btn btn-sm btn-danger"  (click)="deleteResource(resource)">
+                <i class="fa fa-trash"></i></button>
+              <button class="btn btn-sm btn-info" (click)="enableAnnotating(resource)" *ngIf="'TextualBody' !== resource.type">
+                <i class="fa fa-tag"> Annotate</i></button>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+      <tbody id="editingBody" *ngIf="isEditing">
+        <tr>
+          <td>
+            <div>
+              <input type="hidden" [(ngModel)]="sourceUrl" value="">
+              <audio #player style="width: 100%" controls="controls" [src]="safeUrl">
+                Your browser does not support the audio element / audio format.</audio>
+              <video #video autoplay poster="../../assets/tao.png" controls  width="500" height="500" [src]="safeUrl">
+                Your browser does not support embedded videos.</video>
+              <iframe #iframe class="e2e-iframe-trusted-src" width="500" height="500" [src]="safeUrl"></iframe>
+            </div>
+          </td>
+          <td colspan="5">
+            <form #form="ngForm" (ngSubmit)="editResource(resource)" style="text-align:left">
+              <div class="btn-group">
+                <button class="btn btn-sm btn-primary" type="submit" [disabled]="!form.form.valid">
+                  <i class="fa fa-floppy-o"> </i> Save</button>
+                <button class="btn btn-sm btn-warning" (click)="cancelEditing()">
+                  <i class="fa fa-times"> </i> Cancel</button>
+              </div>
+              <div class="form-group">
+                <label for="_id">_id</label>
+                <input class="form-control" type="text" name="_id" [(ngModel)]="resource._id" disabled="disabled">
+              </div>
+              <div class="form-group" *ngIf="resource.type!=='TextualBody'">
+                <label for="id">id ( url )</label>
+                <input class="form-control" type="text" name="id" [(ngModel)]="resource.id" (change)="updateUrl(resource)">
+              </div>
+              <div class="form-group">
+                <label for="name">name</label>
+                <input class="form-control" type="text" name="name" [(ngModel)]="resource.name">
+              </div>
+              <div class="form-group" *ngIf="resource.type!=='TextualBody'">
+                <label for="type">type</label>
+                <select class="form-control" type="text" name="type" [(ngModel)]="resource.type">
+                  <option value="" disabled>Select Type</option>
+                  <option>Text</option>
+                  <option>Image</option>
+                  <option>Video</option>
+                  <option>Sound</option>
+                  <option>Dataset</option>
+                </select>
+              </div>
+              <div class="form-group" *ngIf="resource.type!=='TextualBody'">
+                <label for="format">format</label>
+                <input class="form-control" type="text" name="format" [(ngModel)]="resource.format">
+              </div>
+              <div class="form-group" *ngIf="resource.type==='TextualBody'">
+                <label for="value">value</label>
+                <textarea class="form-control" name="value" [(ngModel)]="resource.value"> </textarea>
+              </div>
+              <div class="form-group" *ngIf="resource.type==='Text'">
+                <label for="language">language</label>
+                <input class="form-control" type="text" name="language" [(ngModel)]="resource.language">
+              </div>
+              <div class="form-group" *ngIf="resource.type==='Text'">
+                <label for="processingLanguage">processing Language</label>
+                <input class="form-control" type="text" name="processingLanguage" [(ngModel)]="resource.processingLanguage">
+              </div>
+              <div class="form-group" *ngIf="resource.type==='Text'">
+                <label for="textDirection">text Direction</label>
+                <input class="form-control" type="text" name="textDirection" [(ngModel)]="resource.textDirection">
+              </div>
+              <div class="form-group" *ngIf="resource.type==='TextualBody'">
+                <label for="purpose">purpose</label>
+                <select class="form-control selectpicker" name="purpose" [(ngModel)]="resource.purpose" ng-model="option">
+                  <option value="" disabled>Select Purpose</option>
+                  <option *ngFor="let x of motivations" [ngValue]="x.name">{{x.name}}</option>
+                </select>
+              </div>
+              <div class="form-group" *ngIf="resource.type!=='TextualBody'">
+                <label for="accessibility">accessibility</label>
+                <input class="form-control" type="text" name="accessibility" [(ngModel)]="resource.accessibility">
+              </div>
+              <div class="form-group" *ngIf="resource.type!=='TextualBody'">
+                <label for="rights">rights</label>
+                <input class="form-control" type="text" name="rights" [(ngModel)]="resource.rights">
+              </div>
+            </form>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+

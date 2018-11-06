@@ -1,0 +1,16 @@
+<svg:path *ngIf="link.visible && !link.filterout"
+    class="Path"
+    [attr.d]="link.path"
+    fill="none"
+    opacity="1"
+    [attr.stroke]="link.color"
+    [attr.stroke-width]="link.size">
+</svg:path>
+<svg:path *ngIf="link.visible && !link.filterout"
+    class="Marker"
+    [attr.d]="link.marker_path"
+    [attr.transform]="link.marker_transform"
+    [attr.fill]="link.color"
+    [attr.stroke]="link.color"
+    [attr.stroke-width]="link.size">
+</svg:path>

@@ -1,0 +1,114 @@
+<svg #graphSvg
+     id="graph"
+     [attr.width]="_options.width"
+     [attr.height]="_options.height">
+
+  <defs>
+
+    <linearGradient id="vertical-gradation" x1="0%" x2="0%" y1="0%" y2="100%">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="1"></stop>
+      <stop offset="80%" stop-color="#fefefe" stop-opacity="1"></stop>
+      <stop offset="90%" stop-color="#fafafa" stop-opacity="1"></stop>
+      <stop offset="100%" stop-color="#e0e0e0" stop-opacity="1"></stop>
+    </linearGradient>
+            
+    <!-- see https://stackoverflow.com/questions/6088409/svg-drop-shadow-using-css3 -->
+    <filter id="dropshadow" height="130%">
+      <feGaussianBlur in="SourceAlpha" stdDeviation="5"></feGaussianBlur>
+      <feOffset dx="-1" dy="3" result="offsetblur"></feOffset>
+      <feComponentTransfer>
+        <feFuncA type="linear" slope="0.7"></feFuncA>
+      </feComponentTransfer>
+      <feMerge> 
+        <feMergeNode></feMergeNode>
+        <feMergeNode in="SourceGraphic"></feMergeNode>
+      </feMerge>
+    </filter>
+
+    <!-- shadow for fixed node -->
+    <filter id="fixed-shadow" height="130%">
+      <feGaussianBlur in="SourceAlpha" stdDeviation="3"></feGaussianBlur>
+      <feOffset dx="-1" dy="2" result="offsetblur"></feOffset>
+      <feComponentTransfer>
+        <feFuncA type="gamma" slope="0.1"></feFuncA>
+      </feComponentTransfer>
+      <feMerge> 
+        <feMergeNode></feMergeNode>
+        <feMergeNode in="SourceGraphic"></feMergeNode>
+      </feMerge>
+    </filter>
+
+  </defs>
+    
+  <g id="draw" [zoomableOf]="graphSvg">
+
+    <g class="axis"
+       stroke="#F7F2E0" stroke-width="1" fill="none">
+      <path d="M-540,0 L-20,0" fill="none"></path>
+      <path d="M20,0 L540,0" fill="none"></path>
+      <path d="M0,-540 L0,-20" fill="none"></path>
+      <path d="M0,20 L0,540" fill="none"></path>
+      <path d="M-480,-400 L480,-400"></path><path d="M-480,-300 L480,-300"></path>
+      <path d="M-480,-200 L480,-200"></path><path d="M-480,-100 L480,-100"></path>
+      <path d="M-480,100 L480,100"></path><path d="M-480,200 L480,200"></path>
+      <path d="M-480,300 L480,300"></path><path d="M-480,400 L480,400"></path>
+      <path d="M-400,-480 L-400,480"></path><path d="M-300,-480 L-300,480"></path>
+      <path d="M-200,-480 L-200,480"></path><path d="M-100,-480 L-100,480"></path>
+      <path d="M100,-480 L100,480"></path><path d="M200,-480 L200,480"></path>
+      <path d="M300,-480 L300,480"></path><path d="M400,-480 L400,480"></path>
+      <circle cx="0" cy="0" r="100" fill="none"></circle>
+      <circle cx="0" cy="0" r="200" fill="none"></circle>
+      <text x="6" y="-400">-400</text>
+      <text x="6" y="-300">-300</text>
+      <text x="6" y="-200">-200</text>
+      <text x="6" y="-100">-100</text>
+      <text x="6" y="100">100</text>
+      <text x="6" y="200">200</text>
+      <text x="6" y="300">300</text>
+      <text x="6" y="400">400</text>
+      <text x="-400" y="16">-400</text>
+      <text x="-300" y="16">-300</text>
+      <text x="-200" y="16">-200</text>
+      <text x="-100" y="16">-100</text>
+      <text x="100" y="16">100</text>
+      <text x="200" y="16">200</text>
+      <text x="300" y="16">300</text>
+      <text x="400" y="16">400</text>
+    </g>
+
+    <g class="link" *ngFor="let link of links"
+       [linkDraw]="link"
+       [selectableLink]="link"
+       [attr.id]="link._id"
+       transform="translate(0 0)">
+    </g>
+
+    <g class="node" *ngFor="let node of nodes"
+       [nodeDraw]="node"
+       [draggableNode]="node"
+       [attr.id]="node._id"
+       [attr.transform]="'translate(' + node.x + ',' + node.y + ')'">
+    </g>
+
+  </g>
+</svg>
+
+<!-- <ng-template #miniatureTooltip>
+  <span>{{ 'This is the Navigation Window.' | translate:lang }}</span>
+</ng-template> -->
+
+<div id="miniature"
+     title="{{ 'This is the Navigation Window.' | translate:lang }}"
+     placement="left">
+  <svg id="miniSvg">
+    <g id="miniCanvas"></g>
+    <text id="miniCursor">
+    </text>
+    <text id="miniScale"
+      x="2" y="12"
+      font-family="Arial"
+      font-size="12"
+      fill="#dfdfdf">
+    </text>
+  </svg>
+</div>

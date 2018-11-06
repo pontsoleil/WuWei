@@ -1,0 +1,29 @@
+<div class="wrapper">
+  <app-filter
+      *ngIf="filtering"
+      (filterEvent)="filterEvent($event)">
+  </app-filter>
+  <app-search
+      *ngIf="searching"
+      (searchEvent)="searchEvent($event)">
+  </app-search>
+  <app-graph
+      [nodes]="nodes"
+      [links]="links"
+      (nodeEvent)="nodeEvent($event)">
+  </app-graph>
+  <app-info
+      *ngIf="selectedNode"
+      [node]="selectedNode"
+      [resource]="selectedResource"
+      (infoEvent)="infoEvent($event)">
+  </app-info>
+  <app-edit
+      *ngIf="editingNode"
+      [node]="editingNode"
+      [resource]="editingResource"
+      (editEvent)="editEvent($event)">
+  </app-edit>
+</div>
+
+<app-menu (menuEvent)="menuEvent($event)"></app-menu>

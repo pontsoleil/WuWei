@@ -1,0 +1,147 @@
+<app-loading [condition]="isLoading"></app-loading>
+
+<app-toast [message]="toast.message"></app-toast>
+
+<div class="card"
+     *ngIf="!isEditing">
+  <h4 class="card-header">Add new Agent</h4>
+  <div class="card-block">
+    <form class="form-inline"
+          [formGroup]="addAgentForm"
+          (ngSubmit)="addAgent()"
+          style="text-align:center">
+      <div class="form-group">
+        <select class="form-control selectpicker"
+                name="type"
+                formControlName="type">
+          <option value="" disabled>Type</option>
+          <option>Person</option>
+          <option>Organization</option>
+          <option>Software</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <input class="form-control" type="text" name="name" formControlName="name" placeholder="Name">
+      </div>
+      <div class="form-group">
+        <input class="form-control" type="text" name="nickname" formControlName="nickname" placeholder="Nickname">
+      </div>
+      <div class="form-group">
+        <input class="form-control" type="email" name="email" formControlName="email" placeholder="Email">
+      </div>
+      <div class="form-group">
+        <input class="form-control" type="text" name="homepage" formControlName="homepage" placeholder="Homepage">
+      </div>
+      <button class="btn btn-primary" type="submit" [disabled]="!addAgentForm.valid">
+        <i class="fa fa-floppy-o"></i> Add
+      </button>
+
+    </form>
+  </div>
+</div>
+
+<div class="card"
+     *ngIf="!isLoading">
+  <h4 class="card-header">Current agents ({{agents.length}})</h4>
+  <div class="card-block">
+    <table class="table table-bordered table-striped">
+      <thead class="thead-default"
+             *ngIf="!isEditing">
+        <tr>
+          <th>Type</th>
+          <th>Name</th>
+          <th>Nickname</th>
+          <th>Email / Homepage</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody *ngIf="agents.length === 0">
+        <tr>
+          <td colspan="5">There are no agents in the DB. Add a new agent below.</td>
+        </tr>
+      </tbody>
+      <tbody *ngIf="!isEditing">
+        <tr *ngFor="let agent of agents">
+          <td>{{agent.type}}</td>
+          <td>{{agent.name}}</td>
+          <td>{{agent.nickname}}</td>
+          <td>{{ 'Person' == agent.type
+                  ? agent.email || agent.homepage
+                  : agent.homepage || agent.email}}</td>
+          <td>
+            <button class="btn btn-sm btn-warning"
+                    (click)="enableEditing(agent)">
+              <i class="fa fa-pencil"></i>
+            </button>
+            <button class="btn btn-sm btn-danger"
+                    (click)="deleteAgent(agent)">
+              <i class="fa fa-trash"></i>
+            </button>
+          </td>
+        </tr>
+      </tbody>
+      <tbody *ngIf="isEditing">
+        <tr>
+          <td colspan="5">
+            <form #form="ngForm"
+                  (ngSubmit)="editAgent(agent)"
+                  style="text-align:left">
+              <div class="form-group">
+                <input class="form-control"
+                       type="text"
+                       name="type"
+                       [(ngModel)]="agent.type"
+                       placeholder="Type"
+                       disabled="disabled">
+              </div>
+              <div class="form-group">
+                <label for="name">Name</label>
+                <input class="form-control"
+                       type="text"
+                       name="name"
+                       [(ngModel)]="agent.name"
+                       placeholder="Name"
+                       required>
+              </div>
+              <div class="form-group">
+                <label for="nickname">Nickname</label>
+                <input class="form-control"
+                       type="text"
+                       name="nickname"
+                       [(ngModel)]="agent.nickname"
+                       placeholder="Nickname">
+              </div>
+              <div class="form-group">
+                <label for="email">Email</label>
+                <input class="form-control"
+                       type="email"
+                       name="email"
+                       [(ngModel)]="agent.email"
+                       placeholder="Email">
+              </div>
+              <div class="form-group">
+                <label for="homepage">Homepage</label>
+                <input class="form-control"
+                       type="text"
+                       name="homepage"
+                       [(ngModel)]="agent.homepage"
+                       placeholder="Homepage">
+              </div>
+              <button class="btn btn-sm btn-primary"
+                      type="submit"
+                      [disabled]="!form.form.valid">
+                <i class="fa fa-floppy-o"></i> Save
+              </button>
+              <button class="btn btn-sm btn-warning"
+                      (click)="cancelEditing()">
+                <i class="fa fa-times"></i> Cancel
+              </button>
+            </form>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+

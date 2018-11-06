@@ -1,0 +1,43 @@
+.loading {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  & i {
+    color: #87ceeb;
+  }
+}
+.list-group-item {
+  display: flex;
+  flex-flow: row wrap;
+  padding: 0.2rem;
+  & img {
+    max-width: 48px;
+    max-height: 48px;
+  }
+  & .content {
+    max-width: 168px;
+    max-height: 80px;
+    line-height: 1rem;
+    font-family: Times;
+  }
+  & .action {
+    max-width: 40px;
+    max-height: 40px;
+    margin: 0 0 0 auto;
+    padding: 0;
+    & i {
+      text-align: center;
+      color: #efefef;
+      background: #fff;
+      cursor: pointer;
+      &.selected {
+        color: #326394;
+      }
+      &:hover {
+        color: #4db3cd;
+      }
+    }
+  }
+}

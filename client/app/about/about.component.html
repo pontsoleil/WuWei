@@ -1,0 +1,51 @@
+<section class="row justify-content-center mx-auto my-4">
+  <!--Form with header-->
+  <!-- <div class="col-1 col-md-2 col-lg-3"></div> -->
+  <div class="card col-10 col-md-8 col-lg-6">
+    <!--Header-->
+    <div class="header pt-3 blue-gradient">
+      <div class="row d-flex justify-content-center">
+        <div class="card-title">
+          <font size="7em">無為&nbsp;</font>
+          <font size="5em">WuWei&nbsp;</font>
+          <font size="3em">supports Knowledge Explorer</font>
+        </div>
+      </div>
+    </div>
+    <!--/.Header-->
+    <!--Body-->
+    <div class="card-body mx-2 my-2">
+      <!-- <img src="../assets/icons/tao200x200.png" class="img-fluid float-left visible" width=80 height=80/> -->
+      <ul>
+        <li>{{ 'Create a personal content collection and annotate it.' | translate:lang }}</li>
+        <li>{{ 'Visual notes will help you organize your thoughts.' | translate:lang }}</li>
+      </ul>
+      <br/>
+      <span *ngIf="expanded==false"
+          (click)="expanded=true"
+          class="d-flex justify-content-end">
+        MIT License <span class="toggle">&#9660;</span>
+      </span>
+      <span *ngIf="expanded==true">
+        <h5>MIT License</h5>
+        <b>Author:</b> <a href="http://www.sambuichi.jp" target="_blank">SAMBUICHI Nobuyuki</a>
+        <br>
+        <p>Copyright (c) 2017-2018 SAMBUICHI Nobuyuki</p>
+        <p>Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal
+    in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+    copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:</p>
+        <p>The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.</p>
+        <p>THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+    FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+    LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+    SOFTWARE.
+        </p>
+        <span (click)="expanded=false"
+            class="d-flex justify-content-end">
+          <span class="toggle">&#9650;</span>
+        </span>
+      </span>
+    </div>
+    <!--/.Body-->
+  </div>
+</section>

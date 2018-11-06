@@ -1,0 +1,6 @@
+<div class="fileupload">
+    <h2>Upload</h2>
+    <input type="file" accept="*/*" (change)="onInputChange($event)">
+    <button (click)="onClickUpload()">Upload</button>
+    <p *ngIf="uploadResult !== ''">Result: {{uploadResult}}</p>
+  </div>

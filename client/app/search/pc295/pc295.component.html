@@ -1,0 +1,227 @@
+<div class="flex-center" *ngIf="loading">
+  <div class="preloader-wrapper big active flex-center align-middle">
+    <div class="spinner-layer spinner-blue-only flex-center">
+      <div class="circle-clipper left">
+        <div class="circle"></div>
+      </div>
+      <div class="gap-patch">
+        <div class="circle"></div>
+      </div>
+      <div class="circle-clipper right">
+        <div class="circle"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="!loading">
+
+  <div class="custom-control custom-radio custom-control-inline">
+    <input type="radio" [checked]="'CD1'==searchCD"
+        (change)="onCDcheck($event, 'CD1')"
+        class="custom-control-input" id="searchCD1" name="searchCD"
+        mdbInputDirective>
+    <label class="custom-control-label" for="searchCD1">CD1</label>
+  </div>
+  <div class="custom-control custom-radio custom-control-inline">
+    <input type="radio" [checked]="'CD2'==searchCD"
+      (change)="onCDcheck($event, 'CD2')"
+      class="custom-control-input" id="searchCD2" name="searchCD"
+      mdbInputDirective>
+    <label class="custom-control-label" for="searchCD2">CD2</label>
+  </div>
+  <div class="custom-control custom-radio custom-control-inline">
+    <input type="radio" [checked]="'Both'==searchCD"
+      (change)="onCDcheck($event, 'Both')"
+      class="custom-control-input" id="searchBoth" name="searchCD"
+      mdbInputDirective>
+    <label class="custom-control-label" for="searchBoth">Both</label>
+  </div>
+
+  <form class="form">
+    <div class="form-group">
+      <input type="search"
+          class="form-control"
+          placeholder="Enter search string"
+          [formControl]="searchField">
+    </div>
+  </form>
+
+  <ul class="menu nav md-pills pills-primary">
+    <li class="nav-item">
+      <a id="mbNC" class="nav-link" data-toggle="tab"
+          [ngClass]="{'selected':'mbNC'===searchBy}"
+          (click)="doSearch('mbNC')">
+        <i class="fa fa-globe fa-lg fa-fw"></i>
+        Country
+      </a>
+    </li>
+    <li class="nav-item">
+      <a id="Clause" class="nav-link" data-toggle="tab"
+          [ngClass]="{'selected':'Clause'===searchBy}"
+          (click)="doSearch('Clause')">
+        <i class="fa fa-bars fa-lg fa-fw"></i>
+        Clause
+      </a>
+    </li>
+    <!-- <li class="nav-item">
+      <a id="Table" class="nav-link" data-toggle="tab"
+          [ngClass]="{'selected':'Table'===searchBy}"
+          (click)="doSearch('Table')">
+        <i class="fa fa-table fa-lg fa-fw"></i>
+        Table
+      </a>
+    </li> -->
+    <li class="nav-item">
+      <a id="Solr" class="nav-link" data-toggle="tab"
+          [ngClass]="{'selected':'Solr'===searchBy}"
+          (click)="doSearch('Solr')">
+        <i class="fa fa-th-large fa-lg fa-fw"></i>
+        Cluster
+      </a>
+    </li>
+  </ul>
+
+  <ul *ngIf="'Term'==searchBy" class="list-group">
+    <li class="list-group-item">
+      <ul class="term">
+        <li *ngFor="let doc of results" class="doc">
+          <hr>
+          <p>
+            <span>
+              <a id="{{ 'doc_' + doc.no }}" (click)="showDetail(doc)">{{ '[' + doc.document + ' ' + doc.no + ']' }}</a>
+            </span>
+            <span class="comment">{{ doc.comment && doc.comment.join(' ').length > 256 ? doc.comment.join(' ').substr(0, 256) + '...' : doc.comment.join(' ') }}</span>
+            <span class="mbNC">{{ '(' + doc.mb_nc + ')' }}</span>
+          </p>
+        </li>
+      </ul>
+    </li>
+  </ul>
+
+  <ul *ngIf="'mbNC'==searchBy" class="list-group">
+    <li class="list-group-item" id="{{ mbNC.index }}"   
+        *ngFor="let mbNC of mbNcArray">
+      <div class="title">
+        <div>{{ mbNC.label }} ( {{ mbNC.docs.length }} )</div>
+        <div *ngIf="mbNC.docs.length > 0" class="angle">
+          <i class="fa fa-angle-down fa-lg fa-fw"
+            (click)="togglembNC(mbNC.index)">
+          </i>
+        </div>
+        <div [ngClass]="{'selected': selected.indexOf(mbNC.index)>=0}">
+          <i class="record fa fa-bookmark fa-lg fa-fw"
+            (click)="renderMBNC(mbNC)">
+          </i>
+        </div>
+      </div>
+      <ul class="mbNC">
+        <li *ngFor="let doc of mbNC.docs" class="doc">
+          <hr>
+          <p>
+            <span>
+              <a id="{{ 'doc_' + doc.no }}" (click)="showDetail(doc)">{{ '[' + doc.document + ' ' + doc.no + ']' }}</a>
+            </span>
+            <span class="comment">{{ doc.comment ? doc.comment.join(' ').length > 256 ? doc.comment.join(' ').substr(0, 256) + '...' : doc.comment.join(' ') : ''}}</span>
+            <span class="mbNC">{{ '(' + doc.mb_nc + ')' }}</span>
+          </p>
+        </li>
+      </ul>
+    </li>
+  </ul>
+
+  <ul *ngIf="'Clause'==searchBy" class="list-group">
+    <li class="list-group-item" id="{{ 'clause_' + clause.index }}"   
+        *ngFor="let clause of clauseArray">
+      <div class="title" *ngIf="clause.docs.length>0">
+        <div>{{ clause.label }} ( {{ clause.docs.length }} )</div>
+        <div *ngIf="clause.docs.length>0" class="angle">
+          <i class="fa fa-angle-down fa-lg fa-fw"
+            (click)="toggleClause(clause.index)">
+          </i>
+        </div>
+        <div [ngClass]="{'selected': selected.indexOf(clause.index)>=0}">
+          <i class="record fa fa-bookmark fa-lg fa-fw"
+            (click)="renderClause(clause)">
+          </i>
+        </div>
+      </div>
+      <ul class="clause" *ngIf="clause.docs.length>0">
+        <li *ngFor="let doc of clause.docs" class="doc">
+          <hr>
+          <p>
+            <span>
+              <a id="{{ 'doc_' + doc.no }}" (click)="showDetail(doc)">{{ '[' + doc.document + ' ' + doc.no + ']' }}</a>
+            </span>
+            <span class="comment">{{ doc.comment ? doc.comment.join(' ').length > 256 ? doc.comment.join(' ').substr(0, 256) + '...' : doc.comment.join(' ') : '' }}</span>
+            <span class="mbNC">{{ '(' + doc.mb_nc + ')' }}</span>
+          </p>
+        </li>
+      </ul>
+    </li>
+  </ul>
+
+  <!-- <ul *ngIf="'Table'==searchBy" class="list-group">
+    <li class="list-group-item" id="{{ table.index }}"   
+        *ngFor="let table of tables">
+      <div class="title">
+        <div>{{ table.label }} ( {{ table.docs.length }} )</div>
+        <div *ngIf="table.docs.length>0" class="angle">
+          <i class="fa fa-angle-down fa-lg fa-fw"
+              (click)="toggleTable(table.index)">
+          </i>
+        </div>
+        <div [ngClass]="{'selected': selected.indexOf(table.label)>=0}">
+          <i class="record fa fa-bookmark fa-lg fa-fw"
+              (click)="renderTable(table)">
+          </i>
+        </div>
+      </div>
+      <ul class="table">
+        <li *ngFor="let doc of table.docs" class="doc">
+          <hr>
+          <p>
+            <span>
+              <a id="{{ 'doc_' + doc.no }}" (click)="showDetail(doc)">{{ '[' + doc.document + ' ' + doc.no + ']' }}</a>
+            </span>
+            <span class="comment">{{ doc.comment ? doc.comment.join(' ').length > 256 ? doc.comment.join(' ').substr(0, 256) + '...' : doc.comment.join(' ') : '' }}</span>
+            <span class="mbNC">{{ '(' + doc.mb_nc + ')' }}</span>
+          </p>
+        </li>
+      </ul>
+    </li>
+  </ul> -->
+    
+  <ul *ngIf="'Solr'==searchBy" class="list-group">
+    <li class="list-group-item" id="{{ 'cluster_' + cluster.id }}"   
+        *ngFor="let cluster of clusters">
+      <div class="title">
+        <div>{{ cluster.title }} ( {{ cluster.docs.length }} )</div>
+        <div>
+          <i *ngIf="cluster.docs.length>0"
+            class="fa fa-angle-down fa-lg fa-fw"
+            (click)="toggleCluster(cluster.id)">
+          </i>
+        </div>
+        <div [ngClass]="{'selected': selected.indexOf(cluster.id)>=0}">
+          <i class="record fa fa-bookmark fa-lg fa-fw"
+            (click)="renderCluster(cluster)">
+          </i>
+        </div>
+      </div>
+      <ul class="cluster">
+        <li *ngFor="let doc of cluster.docs" class="doc">
+          <hr>
+          <p>
+            <span>
+              <a id="{{ 'doc_' + doc.no }}" (click)="showDetail(doc)">{{ '[' + doc.document + ' ' + doc.no + ']' }}</a>
+            </span>
+            <span class="comment">{{ doc.comment ? doc.comment.join(' ').length > 256 ? doc.comment.join(' ').substr(0, 256) + '...' : doc.comment.join(' ') : ''}}</span>
+            <span class="mbNC">{{ '(' + doc.mb_nc + ')' }}</span>
+          </p>
+        </li>
+      </ul>
+    </li>
+  </ul>
+
+</div>

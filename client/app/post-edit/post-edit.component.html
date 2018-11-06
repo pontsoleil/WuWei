@@ -1,0 +1,21 @@
+
+<div>
+  <h2> Post Editing </h2>
+    <form (ngSubmit)="updatePost()">
+      <div class="form-group">
+        <label for="title">Post title</label>
+        <input type="text" class="form-control"
+          [(ngModel)]="post_edit.title"
+          id="title" name="title" required>
+      </div>
+
+      <div class="form-group">
+        <label for="content">Post content</label>
+        <editor class="form-cont  rol" id="content" required [(ngModel)]='post_edit.content' name='content'>
+        </editor>
+        <editor plugins="link table"></editor>
+      </div>
+
+      <button type="submit" class="btn btn-success">Submit</button>
+    </form>
+</div>

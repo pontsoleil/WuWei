@@ -1,0 +1,98 @@
+<div id="page-wrapper" class="filelist">
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="panel panel-primary">
+        <!-- Panel including bucket/folder information and controls -->
+        <div class="panel-heading clearfix">
+          <!-- Bucket selection and breadcrumbs -->
+          <div class="btn-group pull-left">
+            <div class="pull-left">
+              AWS S3 Explorer&nbsp;
+            </div>
+            <!-- mat-table-form -->
+            <div class="example-header">
+              <mat-form-field>
+                <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter">
+              </mat-form-field>
+            </div>
+            <!-- Bucket breadcrumbs -->
+            <!-- <div class="btn pull-right">
+              <ul id="breadcrumb" class="btn breadcrumb pull-right">
+                <li class="active dropdown">
+                  <a href="#">&lt;bucket&gt;</a>
+                </li>
+              </ul>
+            </div> -->
+          </div>
+          <!-- Folder/Bucket radio group and progress spinner -->
+          <div class="pull-right">
+            <div class="pull-left">
+              <!-- <label> -->
+                <!-- <input type="checkbox" id="hidefolders">&nbsp;Hide folders? -->
+                <!-- <button id="hidefolders" type="button" class="btn btn-primary" autocomplete="off" 
+                        [(ngModel)]="singleModel"
+                        btnCheckbox btnCheckboxTrue="1" btnCheckboxFalse="0" ripple-radius>
+                        &nbsp;Hide folders?</button> -->
+              <!-- </label> -->
+              <!-- Folder/Bucket radio group -->
+              <!-- <div class="btn-group" data-toggle="buttons">
+                <label class="btn btn-primary active" title="View all objects in folder">
+                  <i class="fa fa-angle-double-up"></i>
+                  <input type="radio" name="optionsdepth" value="folder" id="optionfolder" checked
+                  [(ngModel)]="radioModel" btnRadio="folder">&nbsp;Folder
+                </label>
+                <label class="btn btn-secondary" title="View all objects in bucket">
+                  <i class="fa fa-angle-double-down"></i>
+                  <input type="radio" name="optionsdepth" value="bucket" id="optionbucket"
+                  [(ngModel)]="radioModel" btnRadio="bucket">&nbsp;Bucket
+                </label>
+              </div> -->
+            </div>
+            <!-- Dual purpose: progress spinner and refresh button -->
+            <div id="refresh">
+              <span id="bucket-loader" (click)="reloadS3()"
+                style="cursor: pointer;" class="fa fa-refresh fa-2x pull-left" title="Refresh"></span>
+              <!-- <span id="badgecount" class="pull-right">42</span> -->
+            </div>
+          </div>
+        </div>
+
+        <!-- Panel including S3 object table -->
+        <div class="panel-body">
+          <mat-table #table [dataSource]="dataSource">
+            <!-- Thumbnail Column -->
+            <ng-container matColumnDef="thumbnail">
+              <mat-header-cell *matHeaderCellDef> icon </mat-header-cell>
+              <mat-cell *matCellDef="let element">
+                <img src="{{ element.thumbnail}}" width=128 height=128>
+              </mat-cell>
+            </ng-container>
+            <!-- Name Column -->
+            <ng-container matColumnDef="name">
+              <mat-header-cell *matHeaderCellDef> Name </mat-header-cell>
+              <mat-cell *matCellDef="let element">{{ element.name}} </mat-cell>
+            </ng-container>
+            <!-- Folder Column -->
+            <ng-container matColumnDef="folder">
+                <mat-header-cell *matHeaderCellDef> Folder </mat-header-cell>
+                <mat-cell *matCellDef="let element">{{ element.folder}} </mat-cell>
+              </ng-container>
+            <!-- LastModified Column -->
+            <ng-container matColumnDef="modified">
+              <mat-header-cell *matHeaderCellDef> Last Modified </mat-header-cell>
+              <mat-cell *matCellDef="let element">{{ element.modified}} </mat-cell>
+            </ng-container>
+            <!-- Size Column -->
+            <ng-container matColumnDef="size">
+              <mat-header-cell *matHeaderCellDef> Size </mat-header-cell>
+              <mat-cell *matCellDef="let element">{{ element.size}} </mat-cell>
+            </ng-container>
+            <!-- Header row -->
+            <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+            <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+          </mat-table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

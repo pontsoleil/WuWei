@@ -1,0 +1,85 @@
+<!--Card-->
+<div class="card card-cascade info">
+  <!--Card image-->
+  <div class="view text view-cascade gradient-card-header cloudy-knoxville-gradient">
+    <span class="md-card-title font-weight-bold grey-text">{{ 'Information' | translate:lang }}</span>
+    <div class="center">
+      <img src="{{ resource?.thumbnail || node?.thumbnail }}" (click)="openCD1Window(resource.id)">
+    </div>
+    <h4 *ngIf="'MEMO'!==node.shape" class="label font-weight-bold grey-text">
+      {{node?.label || resource?.name}}
+    </h4>
+    <span class="mbNC grey-text" *ngIf="pc295value && pc295value.mbNC">( {{ pc295value.mbNC }} )</span>
+  </div>
+  <!--/.Card image-->
+  <!--/Card content-->
+  <div class="card-body card-body-cascade">
+    <div class="value" *ngIf="pc295value">
+      <div *ngIf="pc295value.line_number">
+        <b>Line Number:</b>
+        {{ pc295value.line_number.trim() }}
+      </div>
+      <div *ngIf="pc295value.clause_subclause">
+        <b>Clause/Subclause:</b>
+        <hr>
+        <a *ngIf="pc295value.clauseMap"
+          (click)="openWindow(pc295value.clauseMap.url, pc295value.cd2ClauseMap.url)">
+          {{ pc295value.clauseMap.label || pc295value.clause_subclaus.trim() }}(CD1)
+        </a>
+        <br />
+        <a *ngIf="pc295value.cd2ClauseMap"
+          (click)="openWindow(pc295value.clauseMap.url, pc295value.cd2ClauseMap.url)">
+          {{ pc295value.cd2ClauseMap.label }}(CD2)
+        </a>
+      </div>
+      <div *ngIf="pc295value.paragraph_figure_table">
+        <b>Paragraph/Figure/Table:</b>
+        <hr>
+        <a *ngIf="pc295value.tableMap"
+          (click)="openWindow(pc295value.tableMap.url, pc295value.cd2TableMap.url)">
+          {{ pc295value.tableMap.label || c295Item.paragraph_figure_table.trim() }}(CD1)
+        </a>
+        <br />
+        <a *ngIf="pc295value.cd2TableMap"
+          (click)="openWindow(pc295value.tableMap.url, pc295value.cd2TableMap.url)">
+          {{ pc295value.cd2TableMap.label }}(CD2)
+        </a>
+      </div>
+      <div *ngIf="pc295value.type_of_comment">
+        <b>Type of comment:</b>&nbsp;{{ pc295value.type_of_comment }}
+      </div>
+      <div *ngIf="pc295value.comment">
+        <b>Comment:</b>
+        <hr>
+        <p>{{ pc295value.comment }}</p>
+      </div>
+      <div *ngIf="pc295value.proposed_change">
+        <b>Proposed change:</b>
+        <hr>
+        <p>{{ pc295value.proposed_change }}</p>
+      </div>
+      <div *ngIf="pc295value.mapping_to_slide_actions">
+        <b>Actions:</b>
+        <hr>
+        <p>{{ pc295value.mapping_to_slide_actions }}</p>
+      </div>
+      <div *ngIf="!!pc295value.note">
+        <b>Note:</b>
+        <hr>
+        <p>{{ pc295value.note }}</p>
+      </div>
+      <div *ngIf="pc295value.treatment">
+        <b>Modified status/Treatment:</b>
+        <hr>
+        <p>{{ pc295value.treatment }}</p>
+      </div>
+      <div *ngIf="pc295value.memo">
+        <b>Memo:</b>
+        <hr>
+        <p>{{ pc295value.memo }}</p>
+      </div>
+    </div>
+  </div>
+  <!--/.Card content-->
+</div>
+<!--/.Card-->

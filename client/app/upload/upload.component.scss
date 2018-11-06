@@ -1,0 +1,39 @@
+$hover-color: #4db3cd;
+$danger-color: /*#f4b3c2;*/ #cc7eb1;
+
+@mixin menu_button {
+  color: #A0A0A0;
+  cursor: pointer;
+  &:hover, &.open:hover {
+    @include button_hover;
+  }
+}
+
+@mixin button_hover {
+  color: rgb(77, 179, 205);
+  text-shadow: 0em 0.1em 0.1em rgba(0, 0, 0, 0.5);
+}
+
+.card {
+  width: 30rem;
+}
+.progress-bar, .progress {
+  height: 4px !important;
+}
+ul {
+  list-style-type: none;
+}
+
+.message {
+  & i {
+    @include menu_button;
+  }
+  & img {
+    @include menu_button;
+    border: solid 1px #a0a0a0;
+  }
+}
+
+button[disabled] {
+  background: #a0a0a0!important;
+}

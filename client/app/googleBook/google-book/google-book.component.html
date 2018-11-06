@@ -1,0 +1,50 @@
+<div class="md-card">
+<div class="row m-3">
+  <div class="col-md-2"></div>
+  <div class="col-md-8">
+    <h2 class="text-center">{{ book?.title }}</h2>
+    <h6 class="text-center">{{ book?.subTitle }}</h6>
+    <div class="d-flex justify-content-center">
+      <img src="{{ book?.thumbnail }}">
+    </div>
+
+    <dl>
+      <dt>Description</dt>
+      <dd>
+        <p [innerHtml]="book?.description"></p>
+      </dd>
+
+      <dt>Authors</dt>
+      <dd>{{ book?.authors }}</dd>
+
+      <dt>Categories</dt>
+      <dd>
+        <span *ngFor="let category of book?.categories"
+              class="mr-1 badge badge-pill badge-dark">
+          {{ category }}
+        </span>
+      </dd>
+
+      <dt>Published Date</dt>
+      <dd>{{ book?.publishDate }}</dd>
+
+      <dt>Publisher</dt>
+      <dd>{{ book?.publisher }}</dd>
+    </dl>
+
+    <p>
+      <button *ngIf="!hasBook(book)"
+              (click)="addBook(book)"
+              type="button"
+              class="btn btn-info">Add To Library
+      </button>
+      <button *ngIf="hasBook(book)"
+              (click)="removeBook(book)"
+              type="button"
+              class="btn btn-secondary">Remove From Library
+      </button>
+    </p>
+
+  </div>
+</div>
+</div>

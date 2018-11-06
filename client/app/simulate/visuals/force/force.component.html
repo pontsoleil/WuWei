@@ -1,0 +1,101 @@
+<svg #forceSvg
+     id="force"
+     [attr.width]="_options.width"
+     [attr.height]="_options.height">
+     <!-- [ngClass]="{'inactive': 'playing'===status}"> -->
+
+  <defs>
+
+    <!-- https://use.fontawesome.com/releases/v5.0.13/svgs/regular/file-alt.svg -->
+    <!-- <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"> -->
+    <path id="file-alt"
+      d="M288 248v28c0 6.6-5.4 12-12 12H108c-6.6 0-12-5.4-12-12v-28c0-6.6 5.4-12 12-12h168c6.6 0 12 5.4 12 12zm-12 72H108c-6.6 0-12 5.4-12 12v28c0 6.6 5.4 12 12 12h168c6.6 0 12-5.4 12-12v-28c0-6.6-5.4-12-12-12zm108-188.1V464c0 26.5-21.5 48-48 48H48c-26.5 0-48-21.5-48-48V48C0 21.5 21.5 0 48 0h204.1C264.8 0 277 5.1 286 14.1L369.9 98c9 8.9 14.1 21.2 14.1 33.9zm-128-80V128h76.1L256 51.9zM336 464V176H232c-13.3 0-24-10.7-24-24V48H48v416h288z">
+    </path>
+    <!-- </svg> -->
+
+    <linearGradient id="vertical-gradation" x1="0%" x2="0%" y1="0%" y2="100%">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="1"></stop>
+      <stop offset="80%" stop-color="#fefefe" stop-opacity="1"></stop>
+      <stop offset="90%" stop-color="#fafafa" stop-opacity="1"></stop>
+      <stop offset="100%" stop-color="#e0e0e0" stop-opacity="1"></stop>
+    </linearGradient>
+            
+    <!-- see https://stackoverflow.com/questions/6088409/svg-drop-shadow-using-css3 -->
+    <filter id="dropshadow" height="130%">
+      <feGaussianBlur in="SourceAlpha" stdDeviation="4"></feGaussianBlur>
+      <feOffset dx="2" dy="5" result="offsetBlur"></feOffset>
+      <feComponentTransfer>
+        <feFuncA type="linear" slope="0.7" intercept="0" in="offsetBlur" result="linearTransfer"></feFuncA>
+      </feComponentTransfer>
+      <feMerge> 
+        <feMergeNode in="linearTransfer"></feMergeNode>
+        <feMergeNode in="SourceGraphic"></feMergeNode>
+      </feMerge>
+    </filter>
+
+    <filter id="fixed-shadow" height="120%">
+      <feGaussianBlur in="SourceAlpha" stdDeviation="2"></feGaussianBlur>
+      <feOffset dx="0.5" dy="3" result="offsetBlur"></feOffset>
+      <feComponentTransfer>
+        <feFuncA type="linear" slope="0.5" intercept="0" in="offsetBlur" result="linearTransfer"></feFuncA>
+      </feComponentTransfer>
+      <feMerge> 
+        <feMergeNode in="linearTransfer"></feMergeNode>
+        <feMergeNode in="SourceGraphic"></feMergeNode>
+      </feMerge>
+    </filter>
+
+  </defs>
+
+  <g id="simulation" [forceZoomableOf]="forceSvg">
+
+     <g class="axis"
+        stroke="#EFF8FB" stroke-width="1" fill="none">
+      <path d="M-540,0 L-20,0" fill="none"></path>
+      <path d="M20,0 L540,0" fill="none"></path>
+      <path d="M0,-540 L0,-20" fill="none"></path>
+      <path d="M0,20 L0,540" fill="none"></path>
+      <path d="M-480,-400 L480,-400"></path><path d="M-480,-300 L480,-300"></path>
+      <path d="M-480,-200 L480,-200"></path><path d="M-480,-100 L480,-100"></path>
+      <path d="M-480,100 L480,100"></path><path d="M-480,200 L480,200"></path>
+      <path d="M-480,300 L480,300"></path><path d="M-480,400 L480,400"></path>
+      <path d="M-400,-480 L-400,480"></path><path d="M-300,-480 L-300,480"></path>
+      <path d="M-200,-480 L-200,480"></path><path d="M-100,-480 L-100,480"></path>
+      <path d="M100,-480 L100,480"></path><path d="M200,-480 L200,480"></path>
+      <path d="M300,-480 L300,480"></path><path d="M400,-480 L400,480"></path>
+      <circle cx="0" cy="0" r="100" fill="none"></circle>
+      <circle cx="0" cy="0" r="200" fill="none"></circle>
+      <text stroke="none" fill="#EFF8FB" x="6" y="-400">-400</text>
+      <text stroke="none" fill="#EFF8FB" x="6" y="-300">-300</text>
+      <text stroke="none" fill="#EFF8FB" x="6" y="-200">-200</text>
+      <text stroke="none" fill="#EFF8FB" x="6" y="-100">-100</text>
+      <text stroke="none" fill="#EFF8FB" x="6" y="100">100</text>
+      <text stroke="none" fill="#EFF8FB" x="6" y="200">200</text>
+      <text stroke="none" fill="#EFF8FB" x="6" y="300">300</text>
+      <text stroke="none" fill="#EFF8FB" x="6" y="400">400</text>
+      <text stroke="none" fill="#EFF8FB" x="-400" y="16">-400</text>
+      <text stroke="none" fill="#EFF8FB" x="-300" y="16">-300</text>
+      <text stroke="none" fill="#EFF8FB" x="-200" y="16">-200</text>
+      <text stroke="none" fill="#EFF8FB" x="-100" y="16">-100</text>
+      <text stroke="none" fill="#EFF8FB" x="100" y="16">100</text>
+      <text stroke="none" fill="#EFF8FB" x="200" y="16">200</text>
+      <text stroke="none" fill="#EFF8FB" x="300" y="16">300</text>
+      <text stroke="none" fill="#EFF8FB" x="400" y="16">400</text>
+    </g>
+  </g>
+</svg>
+
+<div id="miniature">
+  <svg id="miniSvg">
+    <g id="miniCanvas"></g>
+    <text id="miniCursor"></text>
+    <text id="miniScale"
+      x="2" y="12"
+      font-family="Arial"
+      font-size="12"
+      fill="#dfdfdf">
+    </text>
+  </svg>
+</div>
+
+

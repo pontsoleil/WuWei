@@ -1,0 +1,24 @@
+.shape-node {
+    cursor: move;
+    transition: stroke-width 0.1s ease-out,
+        fill 0.1s ease-out,
+        stroke 0.1s ease-out;
+    stroke: #c0c0c0;
+    stroke-width: 0.25;
+}
+.memo-node {
+    cursor: move;
+    transition: stroke-width 0.1s ease-out,
+        fill 0.1s ease-out,
+        stroke 0.1s ease-out;
+    stroke: none;
+}
+
+.image {
+    cursor: move;
+    transition: stroke-width 0.1s ease-out,
+        fill 0.1s ease-out,
+        stroke 0.1s ease-out;
+    stroke: #c0c0c0;
+    stroke-width: 0.25;
+}

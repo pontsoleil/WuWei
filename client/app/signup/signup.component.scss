@@ -1,0 +1,17 @@
+$hover-color: #4db3cd;
+.card {
+  color: #707070;
+  padding: 0;
+}
+button.close {
+  position: absolute;
+  top: 0px;
+  right: 4px;
+  color: #a0a0a0;
+  &:hover {
+    color: $hover-color;
+  }
+}
+// button[disabled] {
+//   background: #a0a0a0!important;
+// }

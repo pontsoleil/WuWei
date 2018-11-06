@@ -1,0 +1,109 @@
+<section class="card card-cascade wider reverse row justify-content-center mx-auto my-43">
+  <div class="card col-10 col-md-8 col-lg-6">
+    <!-- Nav tabs -->
+    <ul class="nav nav-tabs nav-justified blue-gradient">
+      <li class="nav-item">
+        <a class="nav-link active" data-toggle="tab" href="#panel1" role="tab">Sign up</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" data-toggle="tab" href="#panel2" role="tab">Confirm</a>
+      </li>
+    </ul>
+    <!-- Tab panels -->
+    <div class="tab-content">
+      <button type="button" class="close" aria-label="Close" (click)="close()">
+        <span aria-hidden="true">&times;</span>
+      </button>
+      <!--panel1-->
+      <div class="tab-pane fade in show active" id="panel1" role="tabpanel">
+        <div class="card-block">
+          <!--Sign up-->
+          <form class="card-content" [formGroup]="signupForm"
+                (ngSubmit)="onSubmitSignup(signupForm.value)">
+            <div class="md-form">
+              <i class="fa fa-user prefix"></i>
+              <input mdbActive type="text" formControlName="name" class="form-control">
+              <label for="name">Sign-in Name</label>
+              <p *ngIf="!name.valid && name.touched" class="text-danger">
+                <span *ngIf="name_.errors.required">Name required.</span>
+              </p>
+            </div>
+            <div class="md-form">
+              <i class="fa fa-user-circle prefix"></i>
+              <input mdbActive type="text" formControlName="nickname" class="form-control">
+              <label for="nickname">Nickname</label>
+              <p *ngIf="!nickname.valid && nickname.touched" class="text-danger">
+                <span *ngIf="nickname_.errors.required">Nickname required.</span>
+              </p>
+            </div>
+            <div class="md-form">
+              <i class="fa fa-envelope prefix"></i>
+              <input mdbActive type="text" formControlName="email" class="form-control">
+              <label for="name">E-mail</label>
+              <p *ngIf="!email.valid && email.touched" class="text-danger">
+                <span *ngIf="email_.errors.required">E-mail required.</span>
+                <span *ngIf="email_.errors.pattern">E-mail wrong format.</span>
+              </p>
+            </div>
+            <div class="md-form">
+              <i class="fa fa-lock prefix"></i>
+              <input mdbActive type="text" formControlName="password" class="form-control">
+              <label for="name">Password</label>
+              <p *ngIf="!password.valid && password.touched" class="text-danger">
+                <span *ngIf="password_.errors.required">Password required.</span>
+                <span *ngIf="password_.errors.pattern">
+                  password must contail both upper and lower case character and at least 8 characters length.
+                </span>
+              </p>
+            </div>
+            <div class="text-center">
+              <button type="submit" [disabled]="!signupForm.valid"
+                      class="btn btn-rounded z-depth-1a waves-light"
+                      [ngClass]="{'blue-gradient':signupForm.valid, 'gray-gradient':!signupForm.valid}"
+                      mdbRippleRadius>
+                <i class="fa fa-user-plus"></i>
+                Register
+              </button>
+            </div>
+          </form>
+          <!--/.Sign up-->
+        </div>
+      </div>
+      <!--/.panel1-->
+      <!--panel2-->
+      <div class="tab-pane fade in show" id="panel2" role="tabpanel">
+        <div class="card-block">
+          <!--Confirm-->
+          <form class="card-content" [formGroup]="confirmationForm"
+                (ngSubmit)="onSubmitConfirmation(confirmationForm.value)">
+            <div class="md-form">
+              <i class="fa fa-user prefix"></i>
+              <input mdbActive type="text" formControlName="name2" class="form-control">
+              <label for="name2">Name(for sign in)</label>
+              <p *ngIf="!name2.valid && name2.touched" class="text-danger">
+                <span *ngIf="name2_.errors.required">Name required.</span>
+              </p>
+            </div>
+            <div class="md-form">
+              <i class="fa fa-user prefix"></i>
+              <input mdbActive type="text" formControlName="confirmationCode" class="form-control">
+              <label for="confirmationCode">Confirmation Code</label>
+              <p *ngIf="!confirmationCode.valid && confirmationCode.touched" class="text-danger">
+                <span *ngIf="confirmationCode_.errors.required">Confirmation code required.</span>
+              </p>
+            </div>
+            <div class="text-center">
+              <button type="submit" [disabled]="!confirmationForm.valid || !successfullySignup"
+                      class="btn blue-gradient btn-rounded z-depth-1a waves-light"
+                      mdbRippleRadius> 
+                Confirm
+              </button>
+            </div>
+          </form>
+          <!--/.Confirm-->
+        </div>
+      </div>
+      <!--/.panel2-->
+    </div>
+  </div>
+</section>

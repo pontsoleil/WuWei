@@ -1,0 +1,35 @@
+<!--Card-->
+<div class="card card-cascade info">
+  <!--Card image-->
+  <div *ngIf="'MEMO'===node.shape"
+      class="memo view view-cascade gradient-card-header cloudy-knoxville-gradient">
+    <span class="md-card-title font-weight-bold grey-text">{{ 'Information' | translate:lang }}</span>
+  </div>
+  <div *ngIf="'MEMO'!==node.shape" 
+      class="view view-cascade gradient-card-header cloudy-knoxville-gradient">
+    <span class="md-card-title font-weight-bold grey-text">{{ 'Information' | translate:lang }}</span>
+    <h5 class="font-weight-bold grey-text">
+        {{ node?.label }}
+    </h5>
+  </div>
+  <!--/.Card image-->
+  <!--Card content-->
+  <div class="card-body card-body-cascade">
+    <div class="center">
+      <img src="{{ resource?.thumbnail || node?.thumbnail }}" (click)="openWindow(resource.id)">
+    </div>
+    <h6>{{ resource?.name }}</h6>
+    <p class="creator" *ngIf="resource.creator">
+      <span class="font-weight-bold grey-text">{{ 'Creator' | translate:lang }}:</span>
+      {{ resource?.creator }}
+    </p>
+    <p class="generator" *ngIf="resource.generator">
+        <span class="font-weight-bold grey-text">{{ 'Generator'  | translate:lang }}:</span>
+        {{ resource?.generator }}
+    </p>
+    <div class="value" *ngIf="resource.value" [innerHtml]="resource?.value">
+    </div>
+  </div>
+  <!--/.Card content-->
+</div>
+<!--/.Card-->
