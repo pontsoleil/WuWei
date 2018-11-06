@@ -45,3 +45,5 @@ client/app/mdb-type/*
 client/assets/*
 uploads/*
 wordpress/*
+client/environments/environment.ts
+client/environments/environment.prod.ts
