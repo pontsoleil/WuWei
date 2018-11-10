@@ -53,7 +53,17 @@ export class WuweiModel {
   constructor(
     @Inject(MessageService) private messageService,
   ) {
-    this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
+    let currentUser = localStorage.getItem('currentUser');
+    if (currentUser) {
+      currentUser = JSON.parse(currentUser);
+      if (currentUser) {
+        this.currentUser = currentUser;
+      } else {
+        this.currentUser = {};
+      }
+    } else {
+      this.currentUser = {};
+    }
     this.user_id = this.currentUser ? this.currentUser._id : null;
   }
 

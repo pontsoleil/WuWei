@@ -18,7 +18,17 @@ export class WpUserService {
     private http: HttpClient
   ) {
     // set token if saved in local storage
-    this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
+    let currentUser = localStorage.getItem('currentUser');
+    if (currentUser) {
+      currentUser = JSON.parse(currentUser);
+      if (currentUser) {
+        this.currentUser = currentUser;
+      } else {
+        this.currentUser = {};
+      }
+    } else {
+      this.currentUser = {};
+    }
     this.token = this.currentUser && this.currentUser.token;
   }
 
