@@ -49,7 +49,7 @@ import {
 
 function whichBrowser() {
   const userAgent = window.navigator.userAgent;
-  const browsers = {chrome: /chrome/i, safari: /safari/i, firefox: /firefox/i, ie: /internet explorer/i};
+  const browsers = {chrome: /[Cc]hrome/i, safari: /[Ss]afari/i, firefox: /[Ff]irefox/i, ie: /internet explorer/i};
   for (const key in browsers) {
     if (browsers[key].test(userAgent)) {
       return key;
